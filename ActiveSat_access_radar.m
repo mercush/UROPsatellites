@@ -1,4 +1,4 @@
-TLE = TLEData('activeabridged.txt');
+TLE = TLEData;
 results = zeros(TLE.size, 5);
 [Y] = DifferencePostedRecorded(TLE);
 ages = cell2mat(Y(:,1));
