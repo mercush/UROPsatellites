@@ -3,7 +3,6 @@ classdef TLEData
        data
        size
     end
-    % something 
     methods(Static)
         function r = StaticGetData()
             url='https://celestrak.com/NORAD/elements/active.txt';
