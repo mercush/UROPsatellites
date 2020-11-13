@@ -61808,12 +61808,6 @@ BEGIN Extensions
     END ObjectCoverage
 
     BEGIN Desc
-        BEGIN ShortText
-
-        END ShortText
-        BEGIN LongText
-
-        END LongText
     END Desc
 
     BEGIN Refraction

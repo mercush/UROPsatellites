@@ -886,9 +886,9 @@ BEGIN Scenario
 
                 StartTime		 26 Oct 2020 16:00:00.000000000
                 EndTime		 25 Nov 2020 16:00:00.000000000
-                CurrentTime		 26 Oct 2020 23:20:51.867592277
+                CurrentTime		 30 Oct 2020 17:46:12.969000000
                 Direction		 Forward
-                UpdateDelta		 30
+                UpdateDelta		 10
                 RefreshDelta		 0.010000
                 XRealTimeMult		 1
                 RealTimeOffset		 0
@@ -970,7 +970,7 @@ BEGIN Scenario
                         PrimaryBody		 Earth
                         SecondaryBody		 Sun
                         CenterLatitude		 0
-                        CenterLongitude		 0
+                        CenterLongitude		 -48.32423652627915
                         ProjectionAltitude		 63621860
                         FieldOfView		 35
                         OrthoDisplayDistance		 20000000
@@ -1007,8 +1007,8 @@ BEGIN Scenario
                         BEGIN ZoomLocations
                             BEGIN ZoomLocation
                                 CenterLat		 0
-                                CenterLon		 0
-                                ZoomWidth		 320.561797752809
+                                CenterLon		 -48.32423652627915
+                                ZoomWidth		 360
                                 ZoomHeight		 180
                             END ZoomLocation
                         END ZoomLocations
