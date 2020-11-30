@@ -110,7 +110,6 @@ for iteration = 0:floor(TLE.size/20)
     
     for n = 20*iteration+1:20*iteration+20
         results(n,:)= [n, avg_pass(n), avg_coverage(n), avg_interval(n), ages(n)]; 
-        % save(strcat('active_access',num2str(n)));
         if n == TLE.size
             break;
         end

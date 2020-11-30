@@ -52,7 +52,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 26 Oct 2020 04:07:33.476
@@ -69,7 +69,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 27 Oct 2020 03:41:02.779
@@ -86,7 +86,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 27 Oct 2020 11:32:12.365
@@ -103,7 +103,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 27 Oct 2020 20:57:35.785
@@ -120,7 +120,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 28 Oct 2020 11:05:40.666
@@ -137,7 +137,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 28 Oct 2020 22:05:17.652
@@ -154,7 +154,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 29 Oct 2020 04:22:12.978
@@ -171,7 +171,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 29 Oct 2020 16:56:03.531
@@ -188,7 +188,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 30 Oct 2020 03:55:40.011
@@ -205,7 +205,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 30 Oct 2020 18:03:43.882
@@ -222,7 +222,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 31 Oct 2020 11:20:14.862
@@ -239,7 +239,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 31 Oct 2020 20:45:37.045
@@ -256,7 +256,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 1 Nov 2020 12:27:53.768
@@ -273,7 +273,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 1 Nov 2020 20:19:01.972
@@ -290,7 +290,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 2 Nov 2020 10:27:04.535
@@ -307,7 +307,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 2 Nov 2020 18:18:12.483
@@ -324,7 +324,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 2 Nov 2020 21:26:39.614
@@ -341,7 +341,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 3 Nov 2020 03:43:33.859
@@ -358,7 +358,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 3 Nov 2020 21:00:02.917
@@ -375,7 +375,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 4 Nov 2020 09:33:51.100
@@ -392,7 +392,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 4 Nov 2020 20:33:25.639
@@ -409,7 +409,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 5 Nov 2020 04:24:33.094
@@ -426,7 +426,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 5 Nov 2020 20:06:47.828
@@ -443,7 +443,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 6 Nov 2020 11:49:02.249
@@ -460,7 +460,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 6 Nov 2020 16:31:42.505
@@ -477,7 +477,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 7 Nov 2020 11:22:23.269
@@ -494,7 +494,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 7 Nov 2020 17:39:16.752
@@ -511,7 +511,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 11 Nov 2020 03:18:47.079
@@ -528,7 +528,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 11 Nov 2020 11:09:53.018
@@ -545,7 +545,7 @@ BEGIN Satellite
                 Enabled		 Yes
 
                 Source		 OnlineAGI
-                LastUpdated		 13 Nov 2020 21:17:00.000
+                LastUpdated		 20 Nov 2020 21:10:09.000
 
                 SwitchMethod		 Epoch
                 SwitchEpoch		 12 Nov 2020 06:00:30.989
@@ -553,6 +553,227 @@ BEGIN Satellite
                 TLE		
                 1 43142U 18004AH  20317.25035867  .00006923  00000-0  24585-3 0  9993
                 2 43142  97.4453  31.7454 0006594 239.1639 120.8952 15.29338881157793
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 13 Nov 2020 05:33:47.739
+
+                TLE		
+                1 43142U 18004AH  20318.23180253  .00006945  00000-0  24651-3 0  9990
+                2 43142  97.4453  32.7278 0006655 235.0021 125.0595 15.29352223157949
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 14 Nov 2020 08:15:29.760
+
+                TLE		
+                1 43142U 18004AH  20319.34409445  .00006726  00000-0  23872-3 0  9991
+                2 43142  97.4452  33.8413 0006755 230.6143 129.4499 15.29368281158110
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 14 Nov 2020 17:40:47.902
+
+                TLE		
+                1 43142U 18004AH  20319.73666553  .00006741  00000-0  23920-3 0  9990
+                2 43142  97.4451  34.2341 0006780 228.9858 131.0796 15.29373805158178
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 15 Nov 2020 06:14:31.861
+
+                TLE		
+                1 43142U 18004AH  20320.26009098  .00007089  00000-0  25132-3 0  9998
+                2 43142  97.4449  34.7580 0006812 226.9842 133.0828 15.29381954158253
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 15 Nov 2020 20:22:28.608
+
+                TLE		
+                1 43142U 18004AH  20320.84894222  .00007207  00000-0  25538-3 0  9995
+                2 43142  97.4447  35.3474 0006840 224.5025 135.5666 15.29389757158344
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 16 Nov 2020 10:30:25.083
+
+                TLE		
+                1 43142U 18004AH  20321.43779031  .00006373  00000-0  22612-3 0  9994
+                2 43142  97.4445  35.9369 0006896 222.1550 137.9160 15.29396377158430
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 16 Nov 2020 16:47:16.773
+
+                TLE		
+                1 43142U 18004AH  20321.69949969  .00006393  00000-0  22681-3 0  9999
+                2 43142  97.4444  36.1989 0006916 221.1159 138.9561 15.29400054158475
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 17 Nov 2020 10:03:38.597
+
+                TLE		
+                1 43142U 18004AH  20322.41919673  .00006097  00000-0  21636-3 0  9999
+                2 43142  97.4441  36.9191 0006981 218.5057 141.5686 15.29409485158581
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 17 Nov 2020 17:54:42.942
+
+                TLE		
+                1 43142U 18004AH  20322.74633035  .00006507  00000-0  23068-3 0  9997
+                2 43142  97.4439  37.2465 0007006 217.3572 142.7182 15.29414562158636
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 17 Nov 2020 21:03:08.649
+
+                TLE		
+                1 43142U 18004AH  20322.87718344  .00006617  00000-0  23452-3 0  9997
+                2 43142  97.4438  37.3774 0007014 216.9268 143.1490 15.29416584158650
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 18 Nov 2020 11:11:04.199
+
+                TLE		
+                1 43142U 18004AH  20323.46602082  .00006565  00000-0  23266-3 0  9999
+                2 43142  97.4437  37.9667 0007067 214.5892 145.4889 15.29424494158747
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 18 Nov 2020 20:36:21.140
+
+                TLE		
+                1 43142U 18004AH  20323.85857801  .00006259  00000-0  22190-3 0  9998
+                2 43142  97.4436  38.3595 0007099 212.9751 147.1047 15.29428801158800
+
+            END TwoLineElement
+
+
+            BEGIN TwoLineElement
+
+                Enabled		 Yes
+
+                Source		 OnlineAGI
+                LastUpdated		 20 Nov 2020 21:10:09.000
+
+                SwitchMethod		 Epoch
+                SwitchEpoch		 19 Nov 2020 20:09:32.969
+
+                TLE		
+                1 43142U 18004AH  20324.83996492  .00006354  00000-0  22513-3 0  9992
+                2 43142  97.4433  39.3417 0007161 208.9946 151.0897 15.29441196158957
 
             END TwoLineElement
 
@@ -899,12 +1120,6 @@ BEGIN Satellite
         END ObjectCoverage
 
         BEGIN Desc
-            BEGIN ShortText
-
-            END ShortText
-            BEGIN LongText
-
-            END LongText
         END Desc
 
         BEGIN RadarCrossSection

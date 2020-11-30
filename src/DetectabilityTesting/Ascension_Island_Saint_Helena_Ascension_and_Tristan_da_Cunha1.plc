@@ -45,9 +45,6 @@ BEGIN Place
             BEGIN ShortText
 Ascension
             END ShortText
-            BEGIN LongText
-
-            END LongText
         END Desc
 
         BEGIN Atmosphere

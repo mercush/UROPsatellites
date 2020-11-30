@@ -8,7 +8,7 @@ BEGIN Access
     SaveComputedData		 Yes
     UpdateOnReference		 Yes
     DupIsDifferent		 No
-    UIOrderReversed		 Yes
+    UIOrderReversed		 No
     UITimePeriod		 Object
     UseLightTimeDelay		 Yes
     ClockHost		 Base
