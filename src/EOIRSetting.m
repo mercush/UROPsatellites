@@ -50,6 +50,6 @@ scenario.Animation.StartTime = "30 Jun 2020 20:20:45.689"
 root.AnimationOptions = 'eAniOptionStop'
 scenario.Epoch = '30 Jun 2020 20:20:45.689'
 %% Save EOIR Data
-root.ExecuteCommand('EOIRDetails */Satellite/TestSatellite/Sensor/TestEOIR SaveSceneRawData "C:/Users/Mauricio Barba/Documents/GitHub/UROPsatellites/src/DetectabilityTesting/MoreEOIRFiles/TestEOIR.txt"');
+root.ExecuteCommand('EOIRDetails */Facility/TestFacility/Sensor/TestEOIR SaveSceneRawData "C:\Users\Mauricio Barba\Documents\GitHub\UROPsatellites\src\DetectabilityTesting\MoreEOIRFiles\TestEOIR.txt"');
 %% Close Application
 %root.CloseScenario
