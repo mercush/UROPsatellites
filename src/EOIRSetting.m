@@ -27,9 +27,29 @@ EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond','eBoresightRo
 EOIR.SetPatternType('eSnEOIR');
 light = EOIR.AccessConstraints.AddConstraint('eCstrLighting');
 light.Condition = 'ePenumbraOrUmbra';
+band1 = EOIR.Pattern.Bands.Item(int32(0));
+band1.HorizontalHalfAngle = 0.3;
+band1.VerticalHalfAngle = 0.3;
+band1.OpticalInputMode = 'eFocalLengthAndApertureDiameter';
+band1.EffFocalL = 100;
+band1.EntrancePDia = 50;
 %% Compute access and set animation time
 access = satellite.GetAccessToObject(EOIR);
 access.ComputeAccess;
 
+% IAgStkAccess access: Access calculation
+% Get and display the Computed Access Intervals
+intervalCollection = access.ComputedAccessIntervalTimes
+
+% Set the intervals to use to the Computed Access Intervals
+computedIntervals = intervalCollection.ToArray(0, -1)
+access.SpecifyAccessIntervals(computedIntervals)
+
+disp(scenario.Animation)
+scenario.Animation.StartTime = "30 Jun 2020 20:20:45.689"
+root.AnimationOptions = 'eAniOptionStop'
+scenario.Epoch = '30 Jun 2020 20:20:45.689'
 %% Save EOIR Data
-%root.ExecuteCommand('EOIRDetails */Satellite/TestSatellite/Sensor/TestEOIR SaveSceneRawData "C:\Users\Mauricio Barba\Documents\GitHub\UROPsatellites\src\DetectabilityTesting\MoreEOIRFiles"')
+root.ExecuteCommand('EOIRDetails */Satellite/TestSatellite/Sensor/TestEOIR SaveSceneRawData "C:/Users/Mauricio Barba/Documents/GitHub/UROPsatellites/src/DetectabilityTesting/MoreEOIRFiles/TestEOIR.txt"');
+%% Close Application
+%root.CloseScenario
