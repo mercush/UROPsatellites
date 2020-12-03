@@ -13,7 +13,7 @@ facility = scenario.Children.New('eFacility','TestFacility');
 facility.Position.AssignGeodetic(-68.9905,84.5464,1.98147);
 satellite = scenario.Children.New('eSatellite','TestSatellite');
 EOIR = facility.Children.New('eSensor','TestEOIR');
-
+root.ExecuteCommand('EOIR */ TargetConfig AddTarget Satellite/TestSatellite')
 %% Set Satellite and EOIR Properties
 satellite.SetPropagatorType('ePropagatorSGP4');
 propagator = satellite.Propagator;
@@ -33,23 +33,23 @@ band1.VerticalHalfAngle = 0.3;
 band1.OpticalInputMode = 'eFocalLengthAndApertureDiameter';
 band1.EffFocalL = 100;
 band1.EntrancePDia = 50;
+disp(EOIR.Pattern.Bands.Count)
 %% Compute access and set animation time
 access = satellite.GetAccessToObject(EOIR);
 access.ComputeAccess;
 
 % IAgStkAccess access: Access calculation
 % Get and display the Computed Access Intervals
-intervalCollection = access.ComputedAccessIntervalTimes
+intervalCollection = access.ComputedAccessIntervalTimes;
 
 % Set the intervals to use to the Computed Access Intervals
-computedIntervals = intervalCollection.ToArray(0, -1)
+computedIntervals = intervalCollection.ToArray(0, -1);
 access.SpecifyAccessIntervals(computedIntervals)
 
-disp(scenario.Animation)
-scenario.Animation.StartTime = "30 Jun 2020 20:20:45.689"
-root.AnimationOptions = 'eAniOptionStop'
-scenario.Epoch = '30 Jun 2020 20:20:45.689'
+scenario.Animation.StartTime = "30 Jun 2020 20:20:45.689";
+root.Rewind();
+
 %% Save EOIR Data
-root.ExecuteCommand('EOIRDetails */Facility/TestFacility/Sensor/TestEOIR SaveSceneRawData "C:\Users\Mauricio Barba\Documents\GitHub\UROPsatellites\src\DetectabilityTesting\MoreEOIRFiles\TestEOIR.txt"');
+root.ExecuteCommand('EOIRDetails */Facility/TestFacility/Sensor/TestEOIR SaveSceneRawData "C:\Users\Mauricio Barba\Documents\GitHub\UROPsatellites\src\DetectabilityTesting\MoreEOIRFiles\TestEOIRUpdated1.txt"');
 %% Close Application
 %root.CloseScenario
