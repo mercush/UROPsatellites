@@ -1,5 +1,7 @@
+function r = EOIRSetting(directory)
+% Directory should be set with microsoft format (backslashes instead of
+% slashes)
 %% Initialize application
-clear;
 app=actxserver('STK12.application');
 root = app.Personality2;
 scenario = root.Children.New('eScenario','MATLAB_Test');
@@ -13,7 +15,6 @@ facility = scenario.Children.New('eFacility','TestFacility');
 facility.Position.AssignGeodetic(-68.9905,84.5464,1.98147);
 satellite = scenario.Children.New('eSatellite','TestSatellite');
 EOIR = facility.Children.New('eSensor','TestEOIR');
-root.ExecuteCommand('EOIR */ TargetConfig AddTarget Satellite/TestSatellite')
 %% Set Satellite and EOIR Properties
 satellite.SetPropagatorType('ePropagatorSGP4');
 propagator = satellite.Propagator;
@@ -33,8 +34,8 @@ band1.VerticalHalfAngle = 0.3;
 band1.OpticalInputMode = 'eFocalLengthAndApertureDiameter';
 band1.EffFocalL = 100;
 band1.EntrancePDia = 50;
-disp(EOIR.Pattern.Bands.Count)
-%% Compute access and set animation time
+root.ExecuteCommand('EOIR */ TargetConfig AddTarget Satellite/TestSatellite');
+%% Compute access
 access = satellite.GetAccessToObject(EOIR);
 access.ComputeAccess;
 
@@ -45,11 +46,20 @@ intervalCollection = access.ComputedAccessIntervalTimes;
 % Set the intervals to use to the Computed Access Intervals
 computedIntervals = intervalCollection.ToArray(0, -1);
 access.SpecifyAccessIntervals(computedIntervals)
-
-scenario.Animation.StartTime = "30 Jun 2020 20:20:45.689";
-root.Rewind();
-
 %% Save EOIR Data
-root.ExecuteCommand('EOIRDetails */Facility/TestFacility/Sensor/TestEOIR SaveSceneRawData "C:\Users\Mauricio Barba\Documents\GitHub\UROPsatellites\src\DetectabilityTesting\MoreEOIRFiles\TestEOIRUpdated1.txt"');
+for i=1:size(computedIntervals,1)
+    scenario.Animation.StartTime = computedIntervals{i};
+    root.Rewind();
+    if computedIntervals{i}(2) == ' '
+        filename = append(computedIntervals{i}(1),computedIntervals{i}(3:5),computedIntervals{i}(9:10),computedIntervals{i}(12:13),computedIntervals{i}(15:16),computedIntervals{i}(18:19),computedIntervals{i}(21:23));
+    else
+        filename = append(computedIntervals{i}(1:2),computedIntervals{i}(4:6),computedIntervals{i}(8:11),computedIntervals{i}(13:14),computedIntervals{i}(16:17),computedIntervals{i}(19:20),computedIntervals{i}(22:24));
+    end
+    root.ExecuteCommand(append('EOIRDetails */Facility/TestFacility/Sensor/TestEOIR SaveSceneRawData ','"',directory,'\',filename,'.txt"'));
+end
+%% Computes the visual magnitude from each file
+v_mag = VisualMagnitudeFromEOIRData(directory);
+r = v_mag;
 %% Close Application
-%root.CloseScenario
+root.CloseScenario
+end
