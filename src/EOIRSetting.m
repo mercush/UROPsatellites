@@ -24,7 +24,8 @@ propagator.Propagate;
 light = satellite.AccessConstraints.AddConstraint('eCstrLighting');
 light.Condition = 'eDirectSun';
 
-EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond','eBoresightRotate','*/Satellite/TestSatellite');
+EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond','eBoresightRotate', ...
+    '*/Satellite/TestSatellite');
 EOIR.SetPatternType('eSnEOIR');
 light = EOIR.AccessConstraints.AddConstraint('eCstrLighting');
 light.Condition = 'ePenumbraOrUmbra';
@@ -51,11 +52,16 @@ for i=1:size(computedIntervals,1)
     scenario.Animation.StartTime = computedIntervals{i};
     root.Rewind();
     if computedIntervals{i}(2) == ' '
-        filename = append(computedIntervals{i}(1),computedIntervals{i}(3:5),computedIntervals{i}(9:10),computedIntervals{i}(12:13),computedIntervals{i}(15:16),computedIntervals{i}(18:19),computedIntervals{i}(21:23));
+        filename = append(computedIntervals{i}(1),computedIntervals{i}(3:5), ...
+            computedIntervals{i}(9:10),computedIntervals{i}(12:13),computedIntervals{i}(15:16), ...
+            computedIntervals{i}(18:19),computedIntervals{i}(21:23));
     else
-        filename = append(computedIntervals{i}(1:2),computedIntervals{i}(4:6),computedIntervals{i}(8:11),computedIntervals{i}(13:14),computedIntervals{i}(16:17),computedIntervals{i}(19:20),computedIntervals{i}(22:24));
+        filename = append(computedIntervals{i}(1:2),computedIntervals{i}(4:6), ...
+        computedIntervals{i}(8:11),computedIntervals{i}(13:14),computedIntervals{i}(16:17), ...
+        computedIntervals{i}(19:20),computedIntervals{i}(22:24));
     end
-    root.ExecuteCommand(append('EOIRDetails */Facility/TestFacility/Sensor/TestEOIR SaveSceneRawData ','"',directory,'\',filename,'.txt"'));
+    root.ExecuteCommand(append('EOIRDetails */Facility/TestFacility/Sensor/TestEOIR SaveSceneRawData ', ...
+        '"',directory,'\',filename,'.txt"'));
 end
 %% Computes the visual magnitude from each file
 v_mag = VisualMagnitudeFromEOIRData(directory);
