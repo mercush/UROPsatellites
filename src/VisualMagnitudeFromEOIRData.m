@@ -1,4 +1,3 @@
-
 function r = VisualMagnitudeFromEOIRData(directory_name)
 directory = ls(directory_name);
 v_mag = zeros(size(directory,1)-2,1);
