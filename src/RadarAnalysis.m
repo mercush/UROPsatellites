@@ -1,5 +1,4 @@
 %% Initialize application
-clear
 app=actxserver('STK12.application');
 root = app.Personality2;
 scenario = root.Children.New('eScenario','MATLAB_Test');
@@ -26,4 +25,5 @@ access = satellite.GetAccessToObject(radar);
 access.ComputeAccess;
 
 %% Get Probability of Detection
-PDT = access.DataProviders.Item('S/T PDet1')
+PDT = access.DataProviders.Item('Radar SearchTrack').Exec(scenario.StartTime,scenario.StopTime,60)
+somethingidkevenwhat = cell2mat(PDT.Interval.Item(cast(1,'int32')).DataSets.GetDataSetByName('S/T PDet1').GetValues)
