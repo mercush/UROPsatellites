@@ -29,7 +29,8 @@ EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond',...
 EOIR.SetPatternType('eSnEOIR');
 light = EOIR.AccessConstraints.AddConstraint('eCstrLighting');
 light.Condition = 'ePenumbraOrUmbra';
-band1 = EOIR.Pattern.Bands.Item(int32(0));
+band1 = EOIR.Pattern.Bands.Item(int32(0))
+disp(band1.NEI)
 band1.HorizontalHalfAngle = 0.3;
 band1.VerticalHalfAngle = 0.3;
 band1.OpticalInputMode = 'eFocalLengthAndApertureDiameter';
