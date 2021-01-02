@@ -17,17 +17,19 @@ satellite.SetPropagatorType('ePropagatorSGP4');
 propagator = satellite.Propagator;
 propagator.CommonTasks.AddSegsFromOnlineSource('43142');
 propagator.AutoUpdateEnabled = true;
-propagator.Step = 60
+propagator.Step = 60;
 propagator.Propagate;
 light = satellite.AccessConstraints.AddConstraint('eCstrLighting');
 light.Condition = 'eDirectSun';
 satellite.RadarCrossSection.Inherit = 0;
+satellite.RadarCrossSection.Model.FrequencyBands.Item(int32(0)).ComputeStrategy.ConstantValue = -28.3113
 %% Set radar properties
-radar.Model.Transmitter.FrequencySpecification = 'eRadarFrequencySpecFrequency'
+radar.Model.Transmitter.FrequencySpecification = 'eRadarFrequencySpecFrequency';
 radar.Model.Transmitter.Frequency = 0.45;
 radar.Model.Transmitter.Power = 70;
 radar.Model.AntennaControl.SetEmbeddedModel("Phased Array")
 phased = radar.Model.AntennaControl.EmbeddedModel;
+phased.DesignFrequency = 0.45
 phased.BeamDirectionProvider.Enabled = 1;
 phased.BeamDirectionProvider.Directions.AddObject(satellite)
 phased.BeamDirectionProvider.LimitsExceededBehaviorType = 'eLimitsExceededBehaviorTypeIgnoreObject';
@@ -35,14 +37,15 @@ phased.ElementConfigurationType = 'eElementConfigurationTypePolygon';
 phased.ElementConfiguration.NumElementsX = 64;
 phased.ElementConfiguration.NumElementsY = 64;
 phased.ElementConfiguration.NumSides = 4;
-phased.ElementConfiguration.SpacingX = 0.5
 %% Compute access between satellite and radar
 access = satellite.GetAccessToObject(radar);
+phased.ElementConfiguration.SpacingUnit = 'eSpacingUnitDistance';
+phased.ElementConfiguration.SpacingX = 0.5;
 access.ComputeAccess;
 
 %% Get Probability of Detection
-PDT = access.DataProviders.Item('Radar SearchTrack').Exec(scenario.StartTime,scenario.StopTime,60)
-SomeProbability = cell2mat(PDT.Interval.Item(cast(1,'int32')).DataSets.GetDataSetByName('S/T PDet1').GetValues)
+PDT = access.DataProviders.Item('Radar SearchTrack').Exec(scenario.StartTime,scenario.StopTime,60);
+SomeProbability = cell2mat(PDT.Interval.Item(cast(1,'int32')).DataSets.GetDataSetByName('S/T PDet1').GetValues);
 
 %% Get the max probability for the trackability score
 maxprob = 0;

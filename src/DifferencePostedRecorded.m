@@ -1,4 +1,4 @@
-TLE=TLEData();
+function Y = DifferencePostedRecorded(TLE)
 url2='https://celestrak.com/NORAD/elements/active.php';
 data=webread(url2);
 S = TLE.data;

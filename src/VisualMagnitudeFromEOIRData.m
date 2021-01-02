@@ -14,7 +14,7 @@ for temp = 3:size(directory,1)
     fclose(file);
     
     s1 = sum(fulltext{63}(63:65)) + sum(fulltext{64}(64:65)) + sum(fulltext{65}(63:65));
-    v_mag(temp-2)= -2.5*log10(s1/763)+0.03;
+    v_mag(temp-2)= -2.5*log10(s1/(1.14*10^(-12)))+0.03;
 end
 
 r = v_mag;

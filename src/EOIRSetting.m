@@ -1,6 +1,3 @@
-function r = EOIRSetting()
-% Directory should be set with microsoft format (backslashes instead of
-% slashes)
 %% Initialize application
 app=actxserver('STK12.application');
 root = app.Personality2;
@@ -48,27 +45,13 @@ intervalCollection = access.ComputedAccessIntervalTimes;
 % Set the intervals to use to the Computed Access Intervals
 computedIntervals = intervalCollection.ToArray(0, -1);
 access.SpecifyAccessIntervals(computedIntervals)
-%% Save EOIR Data
-for i=1:size(computedIntervals,1)
-    scenario.Animation.StartTime = computedIntervals{i};
-    root.Rewind();
-    if computedIntervals{i}(2) == ' '
-        filename = append(computedIntervals{i}(1),computedIntervals{i}(3:5),...
-            computedIntervals{i}(9:10),computedIntervals{i}(12:13),...
-            computedIntervals{i}(15:16), computedIntervals{i}(18:19),...
-            computedIntervals{i}(21:23));
-    else
-        filename = append(computedIntervals{i}(1:2),...
-        computedIntervals{i}(4:6), computedIntervals{i}(8:11),...
-        computedIntervals{i}(13:14),computedIntervals{i}(16:17),...
-        computedIntervals{i}(19:20),computedIntervals{i}(22:24));
-    end
-    root.ExecuteCommand(append('EOIRDetails */Facility/TestFacility/',...
-        'Sensor/TestEOIR SaveSceneRawData "',pwd,'\DetectabilityTesting\MoreEOIRFiles\',filename,'.txt"'));
-end
-%% Computes the visual magnitude from each file
-v_mag = VisualMagnitudeFromEOIRData(append(pwd,'\DetectabilityTesting\MoreEOIRFiles\'));
-r = v_mag;
-%% Close Application
-root.CloseScenario
-end
+%% Computes Visual Magnitude
+% v_mag = zeros(size(computedIntervals,1),1);
+% for temp=1:size(computedIntervals,1)
+%     scenario.Animation.StartTime = computedIntervals{temp};
+%     root.Rewind()
+%     irradiance_data = EOIR.DataProviders.Item('EOIR Sensor To Target Metrics').Exec(scenario.StartTime,scenario.StopTime,60)
+%     % irradiance = cell2mat(irradiance_data.DataSets.GetDataSetByName('Effective target irradiance').GetValues);
+%     % v_mag(temp)= -2.5*log10(irradiance/(1.14*10^(-12)))+0.03;
+% end
+% r = v_mag;
