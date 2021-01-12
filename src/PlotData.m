@@ -1,4 +1,5 @@
-X=DifferencePostedRecorded();
+TLE=TLEData;
+X=DifferencePostedRecorded(TLE);
 sz=size(X,1);
 Xarr=zeros(sz,1);
 for row=1:sz
