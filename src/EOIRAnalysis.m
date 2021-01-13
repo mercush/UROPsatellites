@@ -1,3 +1,4 @@
+function r = EOIRAnalysis 
 %% Get Instance of STK
 uiApplication = actxGetRunningServer('STK12.application');
 root = uiApplication.Personality2;
@@ -20,10 +21,11 @@ datasets = results.DataSets;
 Time = cell2mat(datasets.GetDataSetByName('Time').GetValues);
 irradiance = cell2mat(datasets.GetDataSetByName('Effective target irradiance').GetValues);
 %% Get Visual Magnitude from Irradiance Data
-% for temp=1:size(computedIntervals,1)
-%     % v_mag(temp)= -2.5*log10(irradiance/(1.14*10^(-12)))+0.03;
-% end
-% r = v_mag;
+v_mag = zeros(1,size(irradiance,1));
+for temp=1:size(irradiance,1)
+    v_mag(temp)= -2.5*log10(irradiance(temp)/(1.14*10^(-12)))+0.03;
+end
+r = v_mag;
 
 %% More info
 %https://help.agi.com/stkdevkit/index.htm#../Subsystems/connectCmds/Content/cmd_EOIRDetails.htm#desc
