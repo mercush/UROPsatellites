@@ -1,3 +1,4 @@
+function r = RadarAnalysis
 app = actxGetRunningServer('STK12.application');
 root = app.Personality2;
 scenario = root.CurrentScenario;
@@ -9,8 +10,6 @@ access = satellite.GetAccessToObject(radar);
 access.ComputeAccess;
 
 Probability = access.DataProviders.Item('Radar SearchTrack').Exec(scenario.StartTime,scenario.StopTime,60);
-SomeProbability = cell2mat(Probability.Interval.Item(int32(1)).DataSets.GetDataSetByName('S/T PDet1').GetValues);
-
 maxprob = 0;
 for i = 0:Probability.Interval.Count-1
     SomeProbability = cell2mat(Probability.Interval.Item(int32(i)).DataSets.GetDataSetByName('S/T PDet1').GetValues);
@@ -18,3 +17,4 @@ for i = 0:Probability.Interval.Count-1
         maxprob = max(SomeProbability);
     end
 end
+r = maxprob;
