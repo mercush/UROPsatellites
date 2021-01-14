@@ -1,4 +1,4 @@
-function r = EOIRAnalysis 
+function r = EOIRAnalysis
 %% Get Instance of STK
 uiApplication = actxGetRunningServer('STK12.application');
 root = uiApplication.Personality2;
@@ -15,18 +15,16 @@ EOIR = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and
 %% Get Irradiance Data
 sensorToTarget = EOIR.DataProviders.Item('EOIR Sensor To Target Metrics');
 sensorToTarget.PreData = 'Satellite/SPACEBEE-1_43142 Band1';
-results = sensorToTarget.Exec(scenario.StartTime,scenario.StopTime,60);
+results = sensorToTarget.ExecElements(scenario.StartTime,scenario.StopTime,60,{...
+    'Effective target irradiance'});
 datasets = results.DataSets;
-
-Time = cell2mat(datasets.GetDataSetByName('Time').GetValues);
-irradiance = cell2mat(datasets.GetDataSetByName('Effective target irradiance').GetValues);
+irradiance = results.DataSets.ToArray();
 %% Get Visual Magnitude from Irradiance Data
-v_mag = zeros(1,size(irradiance,1));
-for temp=1:size(irradiance,1)
-    v_mag(temp)= -2.5*log10(irradiance(temp)/(1.14*10^(-12)))+0.03;
+v_mag = zeros(1,numel(irradiance));
+s = size(irradiance);
+for temp1=0:s(1)-1
+    for temp2=1:s(2)
+       v_mag(s(2)*temp1+temp2)= -2.5*log10(irradiance{s(2)*temp1+temp2}/(1.14*10^(-12)))+0.03;
+    end
 end
 r = v_mag;
-
-%% More info
-%https://help.agi.com/stkdevkit/index.htm#../Subsystems/connectCmds/Content/cmd_EOIRDetails.htm#desc
-%https://help.agi.com/stkdevkit/index.htm#stkObjects/ObjModMatlabCodeSamples.htm#131
