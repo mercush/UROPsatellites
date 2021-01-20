@@ -17,14 +17,17 @@ sensorToTarget = EOIR.DataProviders.Item('EOIR Sensor To Target Metrics');
 sensorToTarget.PreData = 'Satellite/SPACEBEE-1_43142 Band1';
 results = sensorToTarget.ExecElements(scenario.StartTime,scenario.StopTime,60,{...
     'Effective target irradiance'});
-datasets = results.DataSets;
 irradiance = results.DataSets.ToArray();
 %% Get Visual Magnitude from Irradiance Data
 v_mag = zeros(1,numel(irradiance));
 s = size(irradiance);
 for temp1=0:s(1)-1
     for temp2=1:s(2)
+       if irradiance{s(2)*temp1+temp2} == 0
+           v_mag(s(2)*temp1+temp2) = 0;
+       else
        v_mag(s(2)*temp1+temp2)= -2.5*log10(irradiance{s(2)*temp1+temp2}/(1.14*10^(-12)))+0.03;
+       end
     end
 end
 r = v_mag;
