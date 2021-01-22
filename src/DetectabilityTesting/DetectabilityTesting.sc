@@ -886,9 +886,9 @@ BEGIN Scenario
 
                 StartTime		 26 Oct 2020 16:00:00.000000000
                 EndTime		 25 Nov 2020 16:00:00.000000000
-                CurrentTime		 30 Oct 2020 17:46:12.969000000
+                CurrentTime		 29 Oct 2020 06:29:43.656215481
                 Direction		 Forward
-                UpdateDelta		 10
+                UpdateDelta		 60
                 RefreshDelta		 0.010000
                 XRealTimeMult		 1
                 RealTimeOffset		 0
@@ -969,8 +969,8 @@ BEGIN Scenario
                     BEGIN MapAttributes
                         PrimaryBody		 Earth
                         SecondaryBody		 Sun
-                        CenterLatitude		 0
-                        CenterLongitude		 -48.32423652627915
+                        CenterLatitude		 23.17638984214138
+                        CenterLongitude		 -42.18943861351079
                         ProjectionAltitude		 63621860
                         FieldOfView		 35
                         OrthoDisplayDistance		 20000000
@@ -1006,8 +1006,8 @@ BEGIN Scenario
                         UseCloudsFile		 Off
                         BEGIN ZoomLocations
                             BEGIN ZoomLocation
-                                CenterLat		 0
-                                CenterLon		 -48.32423652627915
+                                CenterLat		 58.0384744146877
+                                CenterLon		 -42.18943861351079
                                 ZoomWidth		 360
                                 ZoomHeight		 180
                             END ZoomLocation
@@ -1590,7 +1590,8 @@ BEGIN Scenario
 
         Class Satellite
 
-            SPACEBEE-1_43142		
+            BetaTest		
+            BetaTest2		
 
         END Class
 
@@ -1611,9 +1612,12 @@ BEGIN Scenario
         Instance Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR
             Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR		
         END Instance
-        Instance Satellite/SPACEBEE-1_43142
+        Instance Satellite/BetaTest
+            Satellite/BetaTest		
+        END Instance
+        Instance Satellite/BetaTest2
             Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR		
-            Satellite/SPACEBEE-1_43142		
+            Satellite/BetaTest2		
         END Instance
     END References
 

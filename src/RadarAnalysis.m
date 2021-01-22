@@ -1,10 +1,15 @@
-function r = RadarAnalysis
-app = actxGetRunningServer('STK12.application');
-root = app.Personality2;
+function r = RadarAnalysis(root, satellite_name)
+if nargin == 0
+    app = actxGetRunningServer('STK12.application');
+    root = app.Personality2;
+end
 scenario = root.CurrentScenario;
-
-facility = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1');
-satellite = root.GetObjectFromPath('Satellite/SPACEBEE-1_43142');
+if nargin == 0
+    satellite = root.GetObjectFromPath('Satellite/SPACEBEE-1_43142');
+else
+    satellite = root.GetObjectFromPath("Satellite/"+satellite_name);
+end
+place = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1');
 radar = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Radar/Radar');
 access = satellite.GetAccessToObject(radar);
 access.ComputeAccess;

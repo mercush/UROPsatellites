@@ -22,9 +22,13 @@ You'll have to activate the virtual environment every time you want to run the c
 
 ### TLEData
 Class that scapes for the TLE data of some 2000 satellites from the Celestrak website. It has several methods that get satellite information from these data.
-### EOIRSetting
-This is a function that returns the visual magnitude of the SPACEBEE satellite at several times of the month. The EOIR, facility, and satellite are all set up in a particular way in this file. EOIR raw sensor data files are saved in `./DetectabilityTesting/MoreEOIRFiles`. 
-### ActiveSat_access_radar
+### EOIRAnalysis
+This is a function that returns the visual magnitude of the SPACEBEE satellite at several times of the month. The workflow should be like this:
+1. Set the properties of a satellite you plan to analyze in the STK GUI.
+2. Run the MATLAB function with the required parameters to get the visual magnitude at several timesteps of the satellite.
+### RadarAnalysis
+The workflow for this is the same as that of EOIRAnalysis but this function returns the maximal probabability of detection of a satellite in some time period.
+### TLEData
 Gets information from the TLE data collected from the Celestrak site. Simulates satellites with these parameters and gets their access from STK.
 ### DifferencePostedRecorded
 Gets the difference between the time that a satellite's TLE data was collected and published on the Celestrak website.
@@ -48,5 +52,6 @@ Plots the clusters of satellites in polar coordinates. Cartesian coordinates for
 2. Run `git restore` followed by the names of the STK-related files that have been altered. For example `git restore ./DetectabilityTesting/DetectabilityTesting.sc3`
 * In the RCS_Calculator.mlx file, set the numerical parameter of the `mesh` function to either 0.1 or 0.5 so that MATLAB doesn't crash. Rendering the image takes about a minute.
 * If `pip` or `python` aren't working, try `pip3` or `python3` respectively.
+* If you're getting an error related to the connect command in EOIRAnalysis, go in STK and check that there are no satellites in the EOIR configuration.
 ## Acknowledgements
 All work under the ClusterAnalysis directory was done by Vishnu Narayanan

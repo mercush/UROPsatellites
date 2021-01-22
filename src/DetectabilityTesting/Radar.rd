@@ -48,7 +48,7 @@ BEGIN Radar
                                                 </VAR>
                                                 <VAR name = "Directions">
                                                     <LISTLINKTOOBJ>
-                                                        <STRING>&quot;Satellite/SPACEBEE-1_43142&quot;</STRING>
+                                                        <STRING>&quot;Satellite/BetaTest2&quot;</STRING>
                                                     </LISTLINKTOOBJ>
                                                 </VAR>
                                                 <VAR name = "AzimuthSteeringLimitA">
@@ -61808,6 +61808,12 @@ BEGIN Extensions
     END ObjectCoverage
 
     BEGIN Desc
+        BEGIN ShortText
+
+        END ShortText
+        BEGIN LongText
+
+        END LongText
     END Desc
 
     BEGIN Refraction

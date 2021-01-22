@@ -1,3 +1,5 @@
 function [r1, r2] = AggregateAnalysis
-r1 = RadarAnalysis();
-r2 = EOIRAnalysis();
+app = actxGetRunningServer('STK12.application');
+root = app.Personality2;
+r1 = RadarAnalysis(root);
+r2 = EOIRAnalysis(root);

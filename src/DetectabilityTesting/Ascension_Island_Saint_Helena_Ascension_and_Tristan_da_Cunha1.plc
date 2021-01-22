@@ -9,9 +9,9 @@ BEGIN Place
 
         CentralBody		 Earth
         DisplayCoords		 Geodetic
-        EcfLatitude		 -6.8990536277602530e+01
-        EcfLongitude		  8.4546425934288663e+01
-        EcfAltitude		  1.9814737399420196e+03
+        EcfLatitude		  7.2029950083194677e+01
+        EcfLongitude		  1.2343452145304492e+02
+        EcfAltitude		  4.6012717031218315e+01
         HeightAboveGround		  0.0000000000000000e+00
         ComputeTrnMaskAsNeeded		 Off
         SaveTrnMaskDataInBinary		 Off
@@ -144,7 +144,7 @@ Ascension
                 AzElFillAltTranslucency		 0.5
                 UseAzElColor		 Off
                 AzElColor		 #ffffff
-                MinDisplayAlt		 3113.55383278686
+                MinDisplayAlt		 3111.529219343904
                 MaxDisplayAlt		 10000000
                 NumAzElMaskSteps		 1
                 ShowAzElAtRangeMask		 Off

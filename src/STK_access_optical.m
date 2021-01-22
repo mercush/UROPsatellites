@@ -14,7 +14,7 @@ scenario.StopTime = '30 Jul 2020 16:00:00.000';
 root.ExecuteCommand('Animate * Reset');
 
 %% Insert facilities
-for n = 1:49;
+for n = 1:49
 facilityname = strcat( 'facility_',num2str(n) );
 facility = scenario.Children.New('eFacility',facilityname);
 lat = facilitypos(n,1);
