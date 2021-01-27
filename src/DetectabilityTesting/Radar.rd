@@ -47,9 +47,7 @@ BEGIN Radar
                                                     <BOOL>true</BOOL>
                                                 </VAR>
                                                 <VAR name = "Directions">
-                                                    <LISTLINKTOOBJ>
-                                                        <STRING>&quot;Satellite/BetaTest2&quot;</STRING>
-                                                    </LISTLINKTOOBJ>
+                                                    <LISTLINKTOOBJ />
                                                 </VAR>
                                                 <VAR name = "AzimuthSteeringLimitA">
                                                     <QUANTITY Dimension = "AngleUnit" Unit = "rad">
@@ -61808,12 +61806,6 @@ BEGIN Extensions
     END ObjectCoverage
 
     BEGIN Desc
-        BEGIN ShortText
-
-        END ShortText
-        BEGIN LongText
-
-        END LongText
     END Desc
 
     BEGIN Refraction

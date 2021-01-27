@@ -343,6 +343,11 @@ BEGIN Scenario
                 Name		 Access
                 BEGIN Favorite
                     Type		 Graph
+                    BaseDir		 User
+                    Style		 Probability_of_Detection
+                END Favorite
+                BEGIN Favorite
+                    Type		 Graph
                     BaseDir		 Install
                     Style		 Probability_of_Detection
                 END Favorite
@@ -969,8 +974,8 @@ BEGIN Scenario
                     BEGIN MapAttributes
                         PrimaryBody		 Earth
                         SecondaryBody		 Sun
-                        CenterLatitude		 23.17638984214138
-                        CenterLongitude		 -42.18943861351079
+                        CenterLatitude		 0
+                        CenterLongitude		 -28.8469540562013
                         ProjectionAltitude		 63621860
                         FieldOfView		 35
                         OrthoDisplayDistance		 20000000
@@ -1006,8 +1011,8 @@ BEGIN Scenario
                         UseCloudsFile		 Off
                         BEGIN ZoomLocations
                             BEGIN ZoomLocation
-                                CenterLat		 58.0384744146877
-                                CenterLon		 -42.18943861351079
+                                CenterLat		 0
+                                CenterLon		 -28.8469540562013
                                 ZoomWidth		 360
                                 ZoomHeight		 180
                             END ZoomLocation
@@ -1588,13 +1593,6 @@ BEGIN Scenario
 
         END Class
 
-        Class Satellite
-
-            BetaTest		
-            BetaTest2		
-
-        END Class
-
     END SubObjects
 
     BEGIN References
@@ -1611,13 +1609,6 @@ BEGIN Scenario
         END Instance
         Instance Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR
             Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR		
-        END Instance
-        Instance Satellite/BetaTest
-            Satellite/BetaTest		
-        END Instance
-        Instance Satellite/BetaTest2
-            Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR		
-            Satellite/BetaTest2		
         END Instance
     END References
 

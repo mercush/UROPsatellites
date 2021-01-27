@@ -1,20 +1,11 @@
 function r = EOIRAnalysis(root, satellite_name)
 %% Get Instance of STK
-if nargin == 0
-    app = actxGetRunningServer('STK12.application');
-    root = app.Personality2;
-end
-scenario = root.CurrentScenario;
+scenario = root.CurrentScenario();
 root.UnitPreferences.SetCurrentUnit('PowerUnit', 'W')
 root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
-if nargin == 0
-    satellite = root.GetObjectFromPath('Satellite/SPACEBEE-1_43142');
-else
-    satellite = root.GetObjectFromPath("Satellite/"+satellite_name);
-end
 
 %% Get STK Objects
-place = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1');
+satellite = root.GetObjectFromPath("Satellite/"+satellite_name);
 EOIR = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR');
 access = satellite.GetAccessToObject(EOIR);
 access.ComputeAccess;

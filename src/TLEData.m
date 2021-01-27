@@ -56,6 +56,8 @@ classdef TLEData
             r = self.data{1}{n};
         end
         
-        
+        function r = GetCompleteKeplerian(self,n)
+        r = [self.GetMeanMotion(n),self.GetEccentricity(n),self.GetInclination(n),self.GetArgPerigee(n),self.GetRAAN(n),self.GetMeanAnomaly(n)];
+        end
     end
 end
