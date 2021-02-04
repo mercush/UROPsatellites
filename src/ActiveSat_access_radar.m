@@ -1,4 +1,6 @@
-TLE = TLEData;
+% Make a file named "MayaTLEData.txt" and put it in the src directory
+% Copy and paste the tle data that you sent me into the MayaTLEData.txt file
+TLE = TLEData('MayaTLEData.txt');
 results = zeros(TLE.size, 5);
 [Y] = DifferencePostedRecorded(TLE);
 ages = cell2mat(Y(:,1));
