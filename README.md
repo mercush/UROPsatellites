@@ -1,5 +1,8 @@
 # UROPsatellites
 Some code for my UROP. To get started, you'll want to run `git clone https://github.com/mauriciobarba/UROPsatellites.git`. Also, get a hang of how to use the `cd` command in your shell. Once you've figured that out, you'll want to `cd` into the UROPsatellites directory on your computer that you've just cloned. The base directory for these instructions is the UROPsatellites folder. Since I'm using a Linux machine, directories are written using forward slashes (`/`). If you're using a Windows shell, these should probably be replaed with backslashes (`\`). 
+
+When STK closes, it'll ask if you want to save changes. From my experience, I don't think you should. If you do accidentally save, GitHub will detect changes in the STK files. You should restore these. If you don't, there shouldn't be any problem either.
+
 # Setup
 ### Dependencies
 * MATLAB
