@@ -1,28 +1,62 @@
-function [r1, r2] = AggregateAnalysis(EOIRShape, Keplerianelts, satellite_name)
+function [r1, r2] = AggregateAnalysis(satellite_name, EOIRshape, EOIRparams, Keplerianelts)
 %{
-     - EOIRShape is a 3-element array whose entries reprsent height, width,
-    and depth respectively.
+     - EOIRshape is box, cone, coupler, cylinder, plate, or sphere
+     - EOIRparams is an ARRAY (can be one element) whose parameters and order are 
+    specified here: https://help.agi.com/stk/Subsystems/connectCmds/connectCmds.htm#cmd_EOIR.htm
      - Keplerian is a 6-element array whose entries represent the 6 Keplerian
-    elements of the satellite. The entries are the mean motion,
-    eccentricity, inclination, argument of perigee, right ascension, and
-    mean anomaly, respectively
+    elements of the satellite. The entries are the 
+    mean motion, (degrees/sec) 
+    eccentricity, (unitless)
+    inclination, (degrees)
+    argument of perigee, (degrees)
+    right ascension, (degrees)
+    mean anomaly, (degrees)
+    respectively. 
      - satellite_name is the name of the satellite. This can be whatever
      you'd like
 %}
-satellite_name = string(satellite_name);
+%% Prompt the user
+if nargin == 0
+    [satellite_name, EOIRshape, EOIRparams, Keplerianelts, sizeshapetype, locationtype, nodetype] = prompt_user();
+    disp("EOIRshape is "+EOIRshape)
+    disp("EOIRparams are:")
+    disp(EOIRparams)
+    disp("Keplerianelts are:")
+    disp(Keplerianelts)
+else
+    sizeshapetype = 'eSizeShapeMeanMotion';
+    locationtype = 'eLocationMeanAnomaly';
+    nodetype = 'eAscNodeRAAN';
+    EOIRshape = lower(string(EOIRshape));
+end
 %% Getting STK server
 app = actxGetRunningServer('STK12.application');
 root = app.Personality2;
 scenario = root.CurrentScenario();
-RCSavg = rcs_calculation();
+%% Get Radar Cross Section
+RCSavg = rcs_calculation(satellite_name);
 %% Building Satellite
-satellite = scenario.Children.New('eSatellite',satellite_name);
+satellite = scenario.Children.New('eSatellite',"testsat");
 keplerian = satellite.Propagator.InitialState.Representation.ConvertTo('eOrbitStateClassical');
-keplerian.SizeShapeType = 'eSizeShapeMeanMotion';
-keplerian.LocationType = 'eLocationMeanAnomaly';
-keplerian.Orientation.AscNodeType = 'eAscNodeRAAN';
-keplerian.SizeShape.MeanMotion = Keplerianelts(1);
-keplerian.SizeShape.Eccentricity = Keplerianelts(2);
+keplerian.SizeShapeType = sizeshapetype;
+keplerian.LocationType = locationtype;
+keplerian.Orientation.AscNodeType = nodetype;
+if sizeshapetype == "eSizeShapeMeanMotion"
+    keplerian.SizeShape.MeanMotion = Keplerianelts(1);
+    keplerian.SizeShape.Eccentricity = Keplerianelts(2);
+elseif sizeshapetype == "eSizeShapeAltitude"
+    keplerian.SizeShape.ApogeeAltitude = Keplerianelts(1);
+    keplerian.SizeShape.PerigeeAltitude = Keplerianelts(2);
+elseif sizeshapetype == "eSizeShapePeriod"
+    keplerian.SizeShape.Eccentricity = Keplerianelts(1);
+    keplerian.SizeShape.Period = Keplerianelts(2);
+elseif sizeshapetype == "eSizeShapeRadius"
+    keplerian.SizeShape.ApogeeRadius = Keplerianelts(1);
+    keplerian.SizeShape.PerigeeRadius = Keplerianelts(2);    
+elseif sizeshapetype == "eSizeShapeSemimajorAxis"
+    keplerian.SizeShape.Eccentricity = Keplerianelts(1);
+    keplerian.SizeShape.SemiMajorAxis  = Keplerianelts(2);
+end
 keplerian.Orientation.Inclination = Keplerianelts(3);
 keplerian.Orientation.ArgOfPerigee = Keplerianelts(4);
 keplerian.Orientation.AscNode.Value = Keplerianelts(5);
@@ -34,9 +68,22 @@ satellite.Propagator.Propagate;
 %% Satellite radar and EOIR properties
 satellite.RadarCrossSection.Inherit = 0;
 satellite.RadarCrossSection.Model.FrequencyBands.Item(int32(0)).ComputeStrategy.ConstantValue = RCSavg;
-root.ExecuteCommand("EOIR */Satellite/"+satellite_name+" Shape Type Box "+EOIRShape(1)+" "+EOIRShape(2)+" "+EOIRShape(3)+" Reflectance 17.5");
 
+%% Set EOIR shape
+if EOIRshape == "box"
+    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Box "+EOIRparams(1)+" "+EOIRparams(2)+" "+EOIRparams(3)+" Reflectance 17.5");
+elseif EOIRshape == "cone"    
+    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Cone "+EOIRparams(1)+" "+EOIRparams(2)+" Reflectance 17.5");
+elseif EOIRshape == "coupler"    
+    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Coupler "+EOIRparams(1)+" "+EOIRparams(2)+" "+EOIRparams(3)+" Reflectance 17.5");
+elseif EOIRshape == "cylinder"
+    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Cyliner "+EOIRparams(1)+" "+EOIRparams(2)+" Reflectance 17.5");
+elseif EOIRshape == "plate"
+    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Plate "+EOIRparams(1)+" "+EOIRparams(2)+" Reflectance 17.5");
+elseif EOIRshape == "sphere"   
+    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Sphere "+EOIRparams(1)+" Reflectance 17.5");
+end
 %% Get Radar and EOIR Analyses
-r1 = RadarAnalysis(root, satellite_name);
-r2 = EOIRAnalysis(root, satellite_name);
-scenario.Children.Unload('eSatellite',satellite_name)
+r1 = RadarAnalysis(root);
+r2 = 0 % EOIRAnalysis(root);
+scenario.Children.Unload('eSatellite','testsat')

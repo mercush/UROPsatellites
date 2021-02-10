@@ -1,11 +1,24 @@
-function r = rcs_calculation
-satellites_directory = pwd;
-myFiles = dir(satellites_directory + "/Satellites");
+function r = rcs_calculation(satellite_name)
+satellite_name = string(satellite_name);
+if ~endsWith(satellite_name,".STL")
+    satellite_name = satellite_name + ".STL";
+end
+
+satdir = dir("Satellites");
 p = platform;
-if ispc
-    p.FileName = myFiles(3).folder + "\" + myFiles(3).name;
-else
-    p.FileName = myFiles(3).folder + "/" + myFiles(3).name;
+
+% if ispc
+%     p.FileName = myFiles(3).folder + "\" + myFiles(3).name;
+% else
+%     p.FileName = myFiles(3).folder + "/" + myFiles(3).name;
+% end
+for i = 1:length(satdir)
+    if satdir(i).name == satellite_name
+        p.FileName = "Satellites\"+satellite_name;
+        break
+    elseif i == length(satdir)
+        error("satellite was not found")
+    end
 end
 
 p.Units = 'm';

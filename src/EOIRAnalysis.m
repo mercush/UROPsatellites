@@ -1,30 +1,24 @@
-function r = EOIRAnalysis(root, satellite_name)
+function r = EOIRAnalysis(root)
 %% Get Instance of STK
 scenario = root.CurrentScenario();
 root.UnitPreferences.SetCurrentUnit('PowerUnit', 'W')
 root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
 
 %% Get STK Objects
-satellite = root.GetObjectFromPath("Satellite/"+satellite_name);
+satellite = root.GetObjectFromPath("Satellite/testsat");
 EOIR = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR');
 access = satellite.GetAccessToObject(EOIR);
 access.ComputeAccess;
-if nargin == 0
-    EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond','eBoresightRotate', ...
-    "*/Satellite/SPACEBEE-1_43142");
-    root.ExecuteCommand("EOIR */ TargetConfig AddTarget Satellite/SPACEBEE-1_43142");
-else
-    EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond','eBoresightRotate', ...
-    "*/Satellite/"+satellite_name);
-    root.ExecuteCommand("EOIR */ TargetConfig AddTarget Satellite/"+satellite_name);
-end
+
+EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond','eBoresightRotate', ...
+"*/Satellite/testsat");
+root.ExecuteCommand("EOIR */ TargetConfig AddTarget Satellite/testsat");
+
 %% Get Irradiance Data
 sensorToTarget = EOIR.DataProviders.Item('EOIR Sensor To Target Metrics');
-if nargin == 0
-    sensorToTarget.PreData = 'Satellite/SPACEBEE-1_43142 Band1';
-else
-    sensorToTarget.PreData = "Satellite/"+satellite_name+" Band1";
-end
+
+sensorToTarget.PreData = "Satellite/testsat Band1";
+
 results = sensorToTarget.ExecElements(scenario.StartTime,scenario.StopTime,60,{...
     'Effective target irradiance'});
 irradiance = results.DataSets.ToArray();
@@ -40,9 +34,13 @@ for temp1=0:s(1)-1
        end
     end
 end
-if nargin == 0
-    root.ExecuteCommand("EOIR */ TargetConfig RemoveTarget Satellite/SPACEBEE-1_43142");
-else
-    root.ExecuteCommand("EOIR */ TargetConfig RemoveTarget Satellite/"+satellite_name);
+root.ExecuteCommand("EOIR */ TargetConfig RemoveTarget Satellite/testsat");
+idx = 1;
+for temp = v_mag
+    if temp ~= 0
+        corrected_avg_v_mag(idx) = temp;
+        idx = idx + 1;
+    end
 end
-r = v_mag;
+corrected_avg_v_mag = mean(corrected_avg_v_mag);
+r = corrected_avg_v_mag;
