@@ -42,5 +42,9 @@ for temp = v_mag
         idx = idx + 1;
     end
 end
-corrected_avg_v_mag = mean(corrected_avg_v_mag);
-r = corrected_avg_v_mag;
+corrected_avg_v_mag_value = mean(corrected_avg_v_mag);
+h = histogram(corrected_avg_v_mag);
+title('Visual Magnitude of Satellite Over Time');
+xlabel('Time')
+ylabel('Visual Magnitude')
+r = corrected_avg_v_mag_value;
