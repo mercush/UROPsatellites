@@ -1,6 +1,6 @@
-function r = RadarAnalysis(root, satellite_name)
+function r = RadarAnalysis(root)
 scenario = root.CurrentScenario();
-satellite = root.GetObjectFromPath("Satellite/"+satellite_name);
+satellite = root.GetObjectFromPath("Satellite/testsat");
 radar = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Radar/Radar');
 access = satellite.GetAccessToObject(radar);
 access.ComputeAccess;
