@@ -24,9 +24,9 @@ elseif eoirshape == "sphere"
     eoirparameters = str2double(regexp(eoirparameters, ' *, *','split'));
 end
 %% Prompt size shape type for satellite
-sizeshapetype = lower(input("What format do you want to input the size and shape?(Altitude, MeanMotion, ShapePeriod, ShapeRadius, SemimajorAxis): ",'s'));
+sizeshapetype = lower(input("What format do you want to input the size and shape? \nAltitude [input apogee and perigee]\nMeanMotion [input mean motion and eccentricity]\nShapePeriod [input the eccentricity and the period]\nShapeRadius [input the apogee and perigee radii]\nSemimajorAxis [input the eccentricity and semimajor axis]: ",'s'));
 while ~ismember(sizeshapetype,["altitude","meanmotion","shapeperiod","shaperadius","semimajoraxis"])
-    sizeshapetype = lower(input("Try again. What format do you want to input the size and shape?(Altitude, MeanMotion, ShapePeriod, ShapeRadius, SemimajorAxis): ",'s'));
+    sizeshapetype = lower(input("Try again. What format do you want to input the size and shape? \nAltitude [input apogee and perigee]\nMeanMotion [input mean motion and eccentricity]\nShapePeriod [input the eccentricity and the period]\nShapeRadius [input the apogee and perigee radii]\nSemimajorAxis [input the eccentricity and semimajor axis]: ",'s'));
 end
 if sizeshapetype == "altitude"
     sizeshapetype = 'eSizeShapeAltitude';
@@ -40,9 +40,9 @@ elseif sizeshapetype == "semimajoraxis"
     sizeshapetype = 'eSizeShapeSemimajorAxis';
 end
 %% Prompt ascending node type
-nodetype = lower(input("What format do you want to input the location?(LAN, RAAN): ",'s'));
+nodetype = lower(input("What format do you want to input the node type?(LAN, RAAN): ",'s'));
 while ~ismember(nodetype,["lan","raan"])
-    nodetype = lower(input("Try again. What format do you want to input the size and shape?(LAN, RAAN): ",'s'));
+    nodetype = lower(input("Try again. What format do you want to input the node type?(LAN, RAAN): ",'s'));
 end
 if nodetype == "raan"
     nodetype = 'eAscNodeRAAN';

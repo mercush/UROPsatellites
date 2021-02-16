@@ -1,9 +1,23 @@
 function r = RadarAnalysis(root)
 scenario = root.CurrentScenario();
+
 satellite = root.GetObjectFromPath("Satellite/testsat");
-radar = root.GetObjectFromPath('Place/facility_1/Radar/Radar');
-access = satellite.GetAccessToObject(radar);
-access.ComputeAccess;
+for i = 1:7
+    rad(i) = root.GetObjectFromPath(strcat('Place/facility_',num2str(i),'/Radar/Radar'));
+    acc(i) = satellite.GetAccessToObject(rad);
+    acc(i).ComputeAccess;
+    
+end
+for i = 1:7
+    accessdata(i) = acc(i).DataProviders.Item('Access Data').Exec(scenario.StartTime,scenario.StopTime,60);
+    durations(i) = 0;
+    for j = 0:accessdata(i).Count-1
+        durations(i) = durations(i) + accessdata(i).Item(j).Datasets.GetDataSetByName('Duration').GetValues;
+    end
+    [argvalue, argmax] = max(durations);
+end
+radar = rad(argmax);
+access = acc(argmax);
 
 phased = radar.Model.AntennaControl.EmbeddedModel;
 phased.BeamDirectionProvider.Directions.AddObject(satellite)
@@ -19,3 +33,4 @@ title('Probability of Detection Over Time');
 xlabel('Time')
 ylabel('Probability of Detection')
 r = max(TotalProbability);
+
