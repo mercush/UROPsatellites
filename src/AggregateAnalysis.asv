@@ -1,4 +1,4 @@
-function AggregateAnalysis(satellite_name, EOIRshape, EOIRparams, Keplerianelts)
+function [radardet, eoirdet] = AggregateAnalysis(satellite_name, EOIRshape, EOIRparams, Keplerianelts)
 %{
      - EOIRshape is box, cone, coupler, cylinder, plate, or sphere
      - EOIRparams is an ARRAY (can be one element) whose parameters and order are 
@@ -85,18 +85,16 @@ elseif EOIRshape == "plate"
 elseif EOIRshape == "sphere"   
     root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Sphere "+EOIRparams(1)+" Reflectance 17.5");
 end
-%% Get Analyses
-% disp("Running Radar Detectability Analysis")
-% radardet = RadarAnalysis(root);
-% disp(radardet)
-% disp("Running EOIR Detectability Analysis")
-% eoirdet = EOIRAnalysis(root);
-% disp(eoirdet)
-% disp("Running Radar Trackability Analysis")
-% radartrack = ActiveSat_access_radar(root);
-% disp(radartrack)
+%% Get Radar and EOIR Analyses
+disp("Running Radar Detectability Analysis")
+radar = RadarAnalysis(root);
+disp(rad
+disp("Running EOIR Detectability Analysis")
+eoir = EOIRAnalysis(root);
+%% Trackability Analyses
+disp("Running Radar Trackability Analysis")
+ActiveSat_access_radar(root)
 disp("Running EOIR TrackabilityAnalysis")
-eoirtrack = STK_access_optical(root);
-disp(eoirtrack)
+STK_access_optical(root)
 %% Deleting Satellite
 scenario.Children.Unload('eSatellite','testsat')

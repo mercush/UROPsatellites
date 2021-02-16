@@ -343,12 +343,12 @@ BEGIN Scenario
                 Name		 Access
                 BEGIN Favorite
                     Type		 Graph
-                    BaseDir		 User
+                    BaseDir		 Install
                     Style		 Probability_of_Detection
                 END Favorite
                 BEGIN Favorite
                     Type		 Graph
-                    BaseDir		 Install
+                    BaseDir		 User
                     Style		 Probability_of_Detection
                 END Favorite
             END Class
@@ -975,7 +975,7 @@ BEGIN Scenario
                         PrimaryBody		 Earth
                         SecondaryBody		 Sun
                         CenterLatitude		 0
-                        CenterLongitude		 -28.8469540562013
+                        CenterLongitude		 125.8270335896461
                         ProjectionAltitude		 63621860
                         FieldOfView		 35
                         OrthoDisplayDistance		 20000000
@@ -1012,7 +1012,7 @@ BEGIN Scenario
                         BEGIN ZoomLocations
                             BEGIN ZoomLocation
                                 CenterLat		 0
-                                CenterLon		 -28.8469540562013
+                                CenterLon		 125.8270335896461
                                 ZoomWidth		 360
                                 ZoomHeight		 180
                             END ZoomLocation
@@ -1589,7 +1589,13 @@ BEGIN Scenario
 
         Class Place
 
-            Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1		
+            facility_1		
+            facility_2		
+            facility_3		
+            facility_4		
+            facility_5		
+            facility_6		
+            facility_7		
 
         END Class
 
@@ -1599,16 +1605,82 @@ BEGIN Scenario
         Instance *
             *		
         END Instance
-        Instance Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1
-            Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1		
-            Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Radar/Radar		
-            Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR		
+        Instance Place/facility_1
+            Place/facility_1		
+            Place/facility_1/Radar/Radar		
+            Place/facility_1/Sensor/EOIR		
         END Instance
-        Instance Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Radar/Radar
-            Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Radar/Radar		
+        Instance Place/facility_1/Radar/Radar
+            Place/facility_1/Radar/Radar		
         END Instance
-        Instance Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR
-            Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR		
+        Instance Place/facility_1/Sensor/EOIR
+            Place/facility_1/Sensor/EOIR		
+        END Instance
+        Instance Place/facility_2
+            Place/facility_2		
+            Place/facility_2/Radar/Radar1		
+            Place/facility_2/Sensor/EOIR1		
+        END Instance
+        Instance Place/facility_2/Radar/Radar1
+            Place/facility_2/Radar/Radar1		
+        END Instance
+        Instance Place/facility_2/Sensor/EOIR1
+            Place/facility_2/Sensor/EOIR1		
+        END Instance
+        Instance Place/facility_3
+            Place/facility_3		
+            Place/facility_3/Radar/Radar2		
+            Place/facility_3/Sensor/EOIR2		
+        END Instance
+        Instance Place/facility_3/Radar/Radar2
+            Place/facility_3/Radar/Radar2		
+        END Instance
+        Instance Place/facility_3/Sensor/EOIR2
+            Place/facility_3/Sensor/EOIR2		
+        END Instance
+        Instance Place/facility_4
+            Place/facility_4		
+            Place/facility_4/Radar/Radar3		
+            Place/facility_4/Sensor/EOIR3		
+        END Instance
+        Instance Place/facility_4/Radar/Radar3
+            Place/facility_4/Radar/Radar3		
+        END Instance
+        Instance Place/facility_4/Sensor/EOIR3
+            Place/facility_4/Sensor/EOIR3		
+        END Instance
+        Instance Place/facility_5
+            Place/facility_5		
+            Place/facility_5/Radar/Radar4		
+            Place/facility_5/Sensor/EOIR4		
+        END Instance
+        Instance Place/facility_5/Radar/Radar4
+            Place/facility_5/Radar/Radar4		
+        END Instance
+        Instance Place/facility_5/Sensor/EOIR4
+            Place/facility_5/Sensor/EOIR4		
+        END Instance
+        Instance Place/facility_6
+            Place/facility_6		
+            Place/facility_6/Radar/Radar5		
+            Place/facility_6/Sensor/EOIR5		
+        END Instance
+        Instance Place/facility_6/Radar/Radar5
+            Place/facility_6/Radar/Radar5		
+        END Instance
+        Instance Place/facility_6/Sensor/EOIR5
+            Place/facility_6/Sensor/EOIR5		
+        END Instance
+        Instance Place/facility_7
+            Place/facility_7		
+            Place/facility_7/Radar/Radar6		
+            Place/facility_7/Sensor/EOIR6		
+        END Instance
+        Instance Place/facility_7/Radar/Radar6
+            Place/facility_7/Radar/Radar6		
+        END Instance
+        Instance Place/facility_7/Sensor/EOIR6
+            Place/facility_7/Sensor/EOIR6		
         END Instance
     END References
 

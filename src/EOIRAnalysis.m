@@ -6,7 +6,7 @@ root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
 
 %% Get STK Objects
 satellite = root.GetObjectFromPath("Satellite/testsat");
-EOIR = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Sensor/EOIR');
+EOIR = root.GetObjectFromPath('Place/facility_1/Sensor/EOIR');
 access = satellite.GetAccessToObject(EOIR);
 access.ComputeAccess;
 
@@ -43,7 +43,7 @@ for temp = v_mag
     end
 end
 corrected_avg_v_mag_value = mean(corrected_avg_v_mag);
-h = histogram(corrected_avg_v_mag);
+bar(corrected_avg_v_mag);
 title('Visual Magnitude of Satellite Over Time');
 xlabel('Time')
 ylabel('Visual Magnitude')

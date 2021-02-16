@@ -1,0 +1,267 @@
+stk.v.12.0
+WrittenBy    STK_v12.0.1
+
+BEGIN Sensor
+
+    Name		 EOIR4
+
+    BEGIN Pattern
+
+        BEGIN EOIR
+
+            LineOfSightJitter		  0.0000000000000000e+00
+            Blur		 0
+            PROCLEVEL		 SENSOR
+            AlongScanSmearRate		  0.0000000000000000e+00
+            AcrossScanSmearRate		  0.0000000000000000e+00
+            ScanMode		 FRAMINGARRAY
+            JitterType		 LOSGAUSSIAN
+            JitterDataFile		 EOIR_Databases\PropertyFiles\Shape_Files\2dGaussian4StdDev64x64.csv
+            JitterProfileSampling		  5.0000000000000000e+00
+            JitterProfileSamplingFrequency		  5.0000000000000000e+00
+            BEGIN BAND
+                Display		 True
+                BandNumber		 0
+                BandName		 Band1
+                HorizontalFieldOfView		  5.2359877559829881e-03
+                VerticalFieldOfView		  5.2359877559829881e-03
+                HorizontalInstantaneousFieldOfViews		  8.1813056293430692e-02
+                VerticalInstantaneousFieldOfViews		  8.1813056293430692e-02
+                NumberofHorizontalIFOVs		  1.2800000000000000e+02
+                NumberofVerticalIFOVs		  1.2800000000000000e+02
+                HorizontalPixelPitch		  8.1813056339064488e+01
+                VerticalPixelPitch		  8.1813056339064488e+01
+                SpatialInputMode		 FOVandNumPix
+                LowBandEdgeWavelength		  4.0000000000000002e-01
+                HighBandEdgeWavelength		  6.9999999999999996e-01
+                NumberOfIntervals		  6.0000000000000000e+00
+                SpectralShapeMode		 Default
+                SystemRelativeSpectralResponse		 EOIR_Databases\PropertyFiles\RSR_Files\Pan_RSR.srf
+                RSRUnits		 Quanta
+                DiffWaveLenMethod		 1
+                ImageQuality		 0
+                FNumber		  2.0000000000000000e+00
+                EffectiveFocalLength		  1.0000000000000000e+02
+                EntrancePupilDiameter		  5.0000000000000000e+01
+                UserDefinedWavelength		  5.5000000000000004e-01
+                LongitudinalDefocus		  0.0000000000000000e+00
+                OpticalInputMode		 2
+                OpticalTransmissionMode		 1
+                OpticalParameterAutoRebalance		 0
+                RMSWavefrontError		  0.0000000000000000e+00
+                BandEffectiveTransmission		  1.0000000000000000e+00
+                OpticalQualityDataFile		 EOIR_Databases\PropertyFiles\Shape_Files\2dGaussian4StdDev64x64.csv
+                TransmissionSpectralResponseFile		 EOIR_Databases\PropertyFiles\Optical_Transmission_Files\ARGlass_Trans.srf
+                RadiometricUnit		 0
+                DynRange		 0
+                NumberSensorPairs		  0.0000000000000000e+00
+                NumberSensorPairs		  0.0000000000000000e+00
+                CurrentIntegrationTime		  1.0000000000000000e+02
+                CurrentDynamiceRange		  3.0000002441406250e+03
+                CurrentNEI		  1.0000000036274937e-15
+                CurrentSEI		  3.0000002048530261e-12
+                BEGIN Sensitivities
+                     1.0000000000000000e+02  1.0000000000000001e-15
+                END Sensitivities
+                BEGIN Saturations
+                     1.0000000000000000e+02  3.0000000000000001e-12
+                END Saturations
+                RadiometricParameterLevel		 0
+                BandIntegratedQEValue		  1.0000000000000000e+00
+                DetectorFillFactor		  1.0000000000000000e+00
+                DetectorReadNoise		  1.0000000000000000e+00
+                DetectorDarkCurrentNoiseRate		  1.0000000000000000e+00
+                DetectorFull-WellCapacity		  1.0000000000000000e+05
+                AnalogToDigitalBitDepth		 8
+                Analog-to-DigitalQuantizationStepSize		  1.0000000000000000e+02
+                QEMode		 0
+                SimulateQuantization		 0
+                QuantizationMode		 0
+                QESpectralResponseFile		 EOIR_Databases\PropertyFiles\QE_Files\BackIllumSi_QE.srf
+            END BAND
+
+        END EOIR
+
+        DetailedTerrainHorizon		 Yes
+
+
+    END Pattern
+
+    BEGIN Pointing
+
+        BEGIN Targeted
+
+            TargetMode		 Tracking
+            Sequence		 323
+            TrackingMode		 Both
+            AberrationType		 Annual
+            TimeDelayConvergence		 5e-05
+            MaxTimeStep		 360
+            MinTimeStep		 0.01
+            TimeConvergence		 0.005
+            AbsValueConvergence		 1e-14
+            RelValueConvergence		 1e-08
+            DetectEventsUsingSamplesOnly		 No
+
+            BEGIN AssignedTargets
+
+
+            END AssignedTargets
+
+            SaveTargetAccesses		 Yes
+
+            UseTargetSchedule		 No
+
+            BEGIN Stable
+                Use		 No
+                Mode		 NorthStable
+            END Stable
+            AdjustPointingToTargetsDuringAccessToTargets		 No
+            UseTrackControl		 No
+
+        END Targeted
+
+    END Pointing
+
+    BEGIN Optics
+
+        FocalLength		  1.0000000000000000e+02
+        DetectorPitch		  1.0000000000000000e-03
+        IQConstant		  0.0000000000000000e+00
+        GsdCoefficient		  0.0000000000000000e+00
+
+    END Optics
+
+    BEGIN Extensions
+
+        BEGIN EOIR
+        END EOIR
+
+        BEGIN ExternData
+        END ExternData
+
+        BEGIN ADFFileData
+        END ADFFileData
+
+        BEGIN AccessConstraints
+            FieldOfView IncludeIntervals
+            LineOfSight IncludeIntervals
+            Lighting PenumbraUmbra IncludeIntervals
+
+            UsePreferredMaxStep No
+            PreferredMaxStep 360
+        END AccessConstraints
+
+        BEGIN ObjectCoverage
+        END ObjectCoverage
+
+        BEGIN Desc
+        END Desc
+
+        BEGIN Refraction
+            RefractionModel		 Effective Radius Method
+
+            UseRefractionInAccess		 No
+
+            BEGIN ModelData
+                RefractionCeiling		  5.0000000000000000e+03
+                MaxTargetAltitude		  1.0000000000000000e+04
+                EffectiveRadius		  1.3333333333333299e+00
+
+                UseExtrapolation		 Yes
+
+
+            END ModelData
+        END Refraction
+
+        BEGIN Crdn
+        END Crdn
+
+        BEGIN Graphics
+
+            BEGIN Attributes
+
+                Inherit		 No
+                Show		 Yes
+                LineStyle		 0
+                LineWidth		 1
+                PatternColor		 #ff0000
+
+            END Attributes
+
+            BEGIN Display
+
+                NumberOfPatterns		 1
+                PersistenceDuration		  0.0000000000000000e+00
+                PersistenceIgnoreDefChg		 No
+                UpdatesDefnOften		 No
+                MinDisplayAltitude		  0.0000000000000000e+00
+                MaxDisplayAltitude		  1.0000000000000000e+07
+                AltitudeIntersectSense		 InsideOut
+                ShowBothAltCrossings		 No
+                IntersectType		 CentralBody
+                ShowGround		 Yes
+                UseProjectionRadii		 Yes
+                ExcludeHorizonArcs		 No
+                ForwardPersist		 No
+                FillPersist		 No
+                DsplyTmHidesPersist		 No
+                SpaceLength		  5.0000000000000000e+07
+                TgtExtLength		  0.0000000000000000e+00
+                FOVHalfAngle		 No
+                HalfAngle		  0.0000000000000000e+00
+                ProjDisplay		 Sphere
+                DisplayType		 ConstantRadius
+                DisplayFOVWithConstraints		 No
+                ShowBoresight		 No
+                BoresightMarker		 4
+                BoresightColor		 #ffffff
+                ShowFill		 No
+                FillTranslucency		 0.5
+                ShowOn2DMap		 Yes
+
+            END Display
+
+            BEGIN Swath
+
+                MaxStep		  6.0000000000000000e+01
+                MinStep		  1.0000000000000001e-01
+                CloseSwath		 Yes
+                Tolerance		  4.0000000000000000e+00
+                MatchTolerance		  9.0000000000000000e+01
+                ShowSwath		 No
+                ComputationalMethod		 Numerical
+                Color		 #ff0000
+                LineStyle		 0
+                LineWidth		 1
+                SwathIntervalPtr		
+                BEGIN EVENTINTERVAL
+                    BEGIN Interval
+                        Start		 9 Sep 2020 16:00:00.000000000
+                        Stop		 9 Oct 2020 16:00:00.000000000
+                    END Interval
+                    IntervalState		 Explicit
+                END EVENTINTERVAL
+
+
+            END Swath
+
+            BEGIN DisplayTimes
+                DisplayType		 AlwaysOn
+            END DisplayTimes
+        END Graphics
+
+        BEGIN Swath
+        END Swath
+
+        BEGIN VO
+        END VO
+
+    END Extensions
+
+    BEGIN SubObjects
+
+    END SubObjects
+
+END Sensor
+

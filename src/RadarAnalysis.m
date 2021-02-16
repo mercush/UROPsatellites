@@ -1,7 +1,7 @@
 function r = RadarAnalysis(root)
 scenario = root.CurrentScenario();
 satellite = root.GetObjectFromPath("Satellite/testsat");
-radar = root.GetObjectFromPath('Place/Ascension_Island_Saint_Helena_Ascension_and_Tristan_da_Cunha1/Radar/Radar');
+radar = root.GetObjectFromPath('Place/facility_1/Radar/Radar');
 access = satellite.GetAccessToObject(radar);
 access.ComputeAccess;
 
@@ -11,10 +11,10 @@ Probability = access.DataProviders.Item('Radar SearchTrack').Exec(scenario.Start
 TotalProbability = [];
 for i = 0:Probability.Interval.Count-1
     SomeProbability = cell2mat(Probability.Interval.Item(int32(i)).DataSets.GetDataSetByName('S/T PDet1').GetValues);
-    TotalProbability = TotalProbability + SomeProbability;
+    TotalProbability = cat(1,TotalProbability,SomeProbability);
 end
 phased.BeamDirectionProvider.Directions.RemoveAll()
-h = histogram(corrected_avg_v_mag);
+bar(TotalProbability);
 title('Probability of Detection Over Time');
 xlabel('Time')
 ylabel('Probability of Detection')
