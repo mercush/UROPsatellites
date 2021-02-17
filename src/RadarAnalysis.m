@@ -11,10 +11,7 @@ end
 durations = [];
 for i = 1:7
     accessdata(i) = acc(i).DataProviders.Item('Access Data').Exec(scenario.StartTime,scenario.StopTime);
-    for j = 0:accessdata(i).Intervals.Count-1
-        durations(i) = sum(cell2mat(accessdata(i).Intervals.Item(j).Datasets.GetDataSetByName('Duration').GetValues));
-        disp(sum(cell2mat(accessdata(i).Intervals.Item(j).Datasets.GetDataSetByName('Duration').GetValues)));
-    end
+    durations(i) = sum(cell2mat(accessdata(i).Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues));
     [argvalue, argmax] = max(durations);
 end
 radar = rad(argmax);

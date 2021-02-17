@@ -82,7 +82,7 @@ elseif EOIRshape == "cone"
 elseif EOIRshape == "coupler"    
     root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Coupler "+EOIRparams(1)+" "+EOIRparams(2)+" "+EOIRparams(3)+" Reflectance 17.5");
 elseif EOIRshape == "cylinder"
-    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Cyliner "+EOIRparams(1)+" "+EOIRparams(2)+" Reflectance 17.5");
+    root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Cylinder "+EOIRparams(1)+" "+EOIRparams(2)+" Reflectance 17.5");
 elseif EOIRshape == "plate"
     root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Plate "+EOIRparams(1)+" "+EOIRparams(2)+" Reflectance 17.5");
 elseif EOIRshape == "sphere"   
