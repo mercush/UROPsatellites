@@ -4,6 +4,7 @@ scenario = root.CurrentScenario();
 satellite = root.GetObjectFromPath("Satellite/testsat");
 for i = 1:7
     rad(i) = root.GetObjectFromPath(strcat("/Place/facility_"+num2str(i)+"/Radar/Radar"));
+    rad(i).Model.AntennaControl.EmbeddedModel.BeamDirectionProvider.Direcions.AddObject(satellite);
     acc(i) = satellite.GetAccessToObject(rad(i));
     acc(i).ComputeAccess;
     
@@ -16,8 +17,6 @@ end
 radar = rad(argmax);
 access = acc(argmax);
 
-phased = radar.Model.AntennaControl.EmbeddedModel;
-phased.BeamDirectionProvider.Directions.AddObject(satellite)
 Probability = access.DataProviders.Item('Radar SearchTrack').Exec(scenario.StartTime,scenario.StopTime,60);
 TotalProbability = [];
 for i = 0:Probability.Interval.Count-1
