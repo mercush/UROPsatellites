@@ -71,9 +71,6 @@ satellite.Propagator.Propagate;
 satellite.RadarCrossSection.Inherit = 0;
 satellite.RadarCrossSection.Model.FrequencyBands.Item(int32(0)).ComputeStrategy.ConstantValue = RCSavg;
 
-disp("Running Radar Detectability Analysis")
- radardet = RadarAnalysis(root);
- disp(radardet)
 %% Set EOIR shape
 if EOIRshape == "box"
     root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Box "+EOIRparams(1)+" "+EOIRparams(2)+" "+EOIRparams(3)+" Reflectance 17.5");
@@ -89,17 +86,17 @@ elseif EOIRshape == "sphere"
     root.ExecuteCommand("EOIR */Satellite/testsat Shape Type Sphere "+EOIRparams(1)+" Reflectance 17.5");
 end
 %% Get Analyses
-% disp("Running Radar Detectability Analysis")
-% radardet = RadarAnalysis(root);
-% disp(radardet)
-% disp("Running EOIR Detectability Analysis")
-% eoirdet = EOIRAnalysis(root);
-% disp(eoirdet)
-% disp("Running Radar Trackability Analysis")
-% radartrack = ActiveSat_access_radar(root);
-% disp(radartrack)
-% disp("Running EOIR TrackabilityAnalysis")
-% eoirtrack = STK_access_optical(root);
-% disp(eoirtrack)
+ disp("Running Radar Detectability Analysis")
+ radardet = RadarAnalysis(root);
+ disp(radardet)
+ disp("Running EOIR Detectability Analysis")
+ eoirdet = EOIRAnalysis(root);
+ disp(eoirdet)
+ disp("Running Radar Trackability Analysis")
+ radartrack = ActiveSat_access_radar(root);
+ disp(radartrack)
+ disp("Running EOIR TrackabilityAnalysis")
+ eoirtrack = STK_access_optical(root);
+ disp(eoirtrack)
 %% Deleting Satellite
 scenario.Children.Unload('eSatellite','testsat')

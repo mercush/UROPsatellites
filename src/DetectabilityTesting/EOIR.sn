@@ -1,5 +1,5 @@
 stk.v.12.0
-WrittenBy    STK_v12.0.1
+WrittenBy    STK_v12.1.0
 
 BEGIN Sensor
 
@@ -16,7 +16,7 @@ BEGIN Sensor
             AcrossScanSmearRate		  0.0000000000000000e+00
             ScanMode		 FRAMINGARRAY
             JitterType		 LOSGAUSSIAN
-            JitterDataFile		 EOIR_Databases\PropertyFiles\Shape_Files\2dGaussian4StdDev64x64.csv
+            JitterDataFile		 2dGaussian4StdDev64x64.csv
             JitterProfileSampling		  5.0000000000000000e+00
             JitterProfileSamplingFrequency		  5.0000000000000000e+00
             BEGIN BAND
@@ -36,7 +36,7 @@ BEGIN Sensor
                 HighBandEdgeWavelength		  6.9999999999999996e-01
                 NumberOfIntervals		  6.0000000000000000e+00
                 SpectralShapeMode		 Default
-                SystemRelativeSpectralResponse		 EOIR_Databases\PropertyFiles\RSR_Files\Pan_RSR.srf
+                SystemRelativeSpectralResponse		 Pan_RSR.srf
                 RSRUnits		 Quanta
                 DiffWaveLenMethod		 1
                 ImageQuality		 0
@@ -50,8 +50,8 @@ BEGIN Sensor
                 OpticalParameterAutoRebalance		 0
                 RMSWavefrontError		  0.0000000000000000e+00
                 BandEffectiveTransmission		  1.0000000000000000e+00
-                OpticalQualityDataFile		 EOIR_Databases\PropertyFiles\Shape_Files\2dGaussian4StdDev64x64.csv
-                TransmissionSpectralResponseFile		 EOIR_Databases\PropertyFiles\Optical_Transmission_Files\ARGlass_Trans.srf
+                OpticalQualityDataFile		 2dGaussian4StdDev64x64.csv
+                TransmissionSpectralResponseFile		 ARGlass_Trans.srf
                 RadiometricUnit		 0
                 DynRange		 0
                 NumberSensorPairs		  0.0000000000000000e+00
@@ -77,7 +77,7 @@ BEGIN Sensor
                 QEMode		 0
                 SimulateQuantization		 0
                 QuantizationMode		 0
-                QESpectralResponseFile		 EOIR_Databases\PropertyFiles\QE_Files\BackIllumSi_QE.srf
+                QESpectralResponseFile		 BackIllumSi_QE.srf
             END BAND
 
         END EOIR
@@ -107,11 +107,6 @@ BEGIN Sensor
 
 
             END AssignedTargets
-
-            BEGIN TargetInviews
-
-
-            END TargetInviews
 
             SaveTargetAccesses		 Yes
 

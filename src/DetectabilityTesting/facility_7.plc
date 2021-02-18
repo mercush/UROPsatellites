@@ -1,5 +1,5 @@
 stk.v.12.0
-WrittenBy    STK_v12.0.1
+WrittenBy    STK_v12.1.0
 
 BEGIN Place
 
@@ -45,9 +45,6 @@ BEGIN Place
             BEGIN ShortText
 Ascension
             END ShortText
-            BEGIN LongText
-
-            END LongText
         END Desc
 
         BEGIN Atmosphere
@@ -57,29 +54,71 @@ Ascension
         <BOOL>true</BOOL>
     </VAR>
     <VAR name = "AtmosAbsorptionModel">
-        <VAR name = "Simple_Satcom">
-            <SCOPE Class = "AtmosphericAbsorptionModel">
-                <VAR name = "Version">
-                    <STRING>&quot;1.0.1 a&quot;</STRING>
+        <SCOPE Class = "LinkEmbedControl">
+            <VAR name = "ReferenceType">
+                <STRING>&quot;Unlinked&quot;</STRING>
+            </VAR>
+            <VAR name = "Component">
+                <VAR name = "Simple_Satcom">
+                    <SCOPE Class = "AtmosphericAbsorptionModel">
+                        <VAR name = "Version">
+                            <STRING>&quot;1.0.1 a&quot;</STRING>
+                        </VAR>
+                        <VAR name = "IdentifierInformation">
+                            <SCOPE>
+                                <VAR name = "Identifier">
+                                    <STRING>&quot;{9CEC50A6-BABB-4325-A403-FEC2885972A2}&quot;</STRING>
+                                </VAR>
+                                <VAR name = "Version">
+                                    <STRING>&quot;1&quot;</STRING>
+                                </VAR>
+                                <VAR name = "SourceIdentifierInformation">
+                                    <SCOPE>
+                                        <VAR name = "Identifier">
+                                            <STRING>&quot;{29E14193-BA6A-42C5-83C5-73DF960AFE44}&quot;</STRING>
+                                        </VAR>
+                                        <VAR name = "Version">
+                                            <STRING>&quot;1&quot;</STRING>
+                                        </VAR>
+                                    </SCOPE>
+                                </VAR>
+                            </SCOPE>
+                        </VAR>
+                        <VAR name = "ComponentName">
+                            <STRING>&quot;Simple_Satcom&quot;</STRING>
+                        </VAR>
+                        <VAR name = "Description">
+                            <STRING>&quot;Simple Satcom gaseous absorption model&quot;</STRING>
+                        </VAR>
+                        <VAR name = "Type">
+                            <STRING>&quot;Simple Satcom&quot;</STRING>
+                        </VAR>
+                        <VAR name = "UserComment">
+                            <STRING>&quot;Simple Satcom gaseous absorption model&quot;</STRING>
+                        </VAR>
+                        <VAR name = "ReadOnly">
+                            <BOOL>false</BOOL>
+                        </VAR>
+                        <VAR name = "Clonable">
+                            <BOOL>true</BOOL>
+                        </VAR>
+                        <VAR name = "Category">
+                            <STRING>&quot;@Top&quot;</STRING>
+                        </VAR>
+                        <VAR name = "SurfaceTemperature">
+                            <QUANTITY Dimension = "Temperature" Unit = "K">
+                                <REAL>293.15</REAL>
+                            </QUANTITY>
+                        </VAR>
+                        <VAR name = "WaterVaporConcentration">
+                            <QUANTITY Dimension = "Density" Unit = "g*m^-3">
+                                <REAL>7.5</REAL>
+                            </QUANTITY>
+                        </VAR>
+                    </SCOPE>
                 </VAR>
-                <VAR name = "ComponentName">
-                    <STRING>&quot;Simple_Satcom&quot;</STRING>
-                </VAR>
-                <VAR name = "Type">
-                    <STRING>&quot;Simple Satcom&quot;</STRING>
-                </VAR>
-                <VAR name = "SurfaceTemperature">
-                    <QUANTITY Dimension = "Temperature" Unit = "K">
-                        <REAL>293.15</REAL>
-                    </QUANTITY>
-                </VAR>
-                <VAR name = "WaterVaporConcentration">
-                    <QUANTITY Dimension = "Density" Unit = "g*m^-3">
-                        <REAL>7.5</REAL>
-                    </QUANTITY>
-                </VAR>
-            </SCOPE>
-        </VAR>
+            </VAR>
+        </SCOPE>
     </VAR>
     <VAR name = "EnableLocalRainData">
         <BOOL>false</BOOL>
@@ -106,6 +145,9 @@ Ascension
 <SCOPE>
     <VAR name = "Inherit">
         <BOOL>true</BOOL>
+    </VAR>
+    <VAR name = "Model">
+        <SCOPE Class = "LinkEmbedControl" />
     </VAR>
 </SCOPE>        END RadarCrossSection
 
@@ -256,13 +298,13 @@ Ascension
 
         Class Radar
 
-            Radar6		
+            Radar		
 
         END Class
 
         Class Sensor
 
-            EOIR6		
+            EOIR		
 
         END Class
 
