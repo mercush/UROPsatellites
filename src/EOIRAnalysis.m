@@ -4,10 +4,22 @@ scenario = root.CurrentScenario();
 root.UnitPreferences.SetCurrentUnit('PowerUnit', 'W')
 root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
 
-%% Get STK Objects
+%% Get EOIR with most access
 satellite = root.GetObjectFromPath("Satellite/testsat");
-EOIR = root.GetObjectFromPath('Place/facility_1/Sensor/EOIR');
-access = satellite.GetAccessToObject(EOIR);
+for i = 1:7
+    eo(i) = root.GetObjectFromPath(strcat("/Place/facility_"+num2str(i)+"/Radar/EOIR"));
+    acc(i) = satellite.GetAccessToObject(eo(i));
+    acc(i).ComputeAccess;
+    
+end
+for i = 1:7
+    accessdata(i) = acc(i).DataProviders.Item('Access Data').Exec(scenario.StartTime,scenario.StopTime);
+    durations(i) = sum(cell2mat(accessdata(i).Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues));
+    [argvalue, argmax] = max(durations);
+end
+EOIR = eo(argmax);
+access = acc(argmax);
+%% Get STK Objects
 access.ComputeAccess;
 
 EOIR.CommonTasks.SetPointingTargetedTracking('eTrackModeTranspond','eBoresightRotate', ...
@@ -43,8 +55,10 @@ for temp = v_mag
     end
 end
 corrected_avg_v_mag_value = mean(corrected_avg_v_mag);
+max_v_mag = max(corrected_avg_v_mag);
+min_v_min = min(corrected_avg_v_mag);
 bar(corrected_avg_v_mag);
 title('Visual Magnitude of Satellite Over Time');
 xlabel('Time')
 ylabel('Visual Magnitude')
-r = corrected_avg_v_mag_value;
+r = [corrected_avg_v_mag_value,max_v_mag];

@@ -8,7 +8,6 @@ for i = 1:7
     acc(i).ComputeAccess;
     
 end
-durations = [];
 for i = 1:7
     accessdata(i) = acc(i).DataProviders.Item('Access Data').Exec(scenario.StartTime,scenario.StopTime);
     durations(i) = sum(cell2mat(accessdata(i).Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues));
