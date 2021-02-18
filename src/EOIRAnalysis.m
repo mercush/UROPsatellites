@@ -7,7 +7,7 @@ root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
 %% Get EOIR with most access
 satellite = root.GetObjectFromPath("Satellite/testsat");
 for i = 1:7
-    eo(i) = root.GetObjectFromPath(strcat("/Place/facility_"+num2str(i)+"/Radar/EOIR"));
+    eo(i) = root.GetObjectFromPath(strcat("/Place/facility_"+num2str(i)+"/Sensor/EOIR"));
     acc(i) = satellite.GetAccessToObject(eo(i));
     acc(i).ComputeAccess;
     

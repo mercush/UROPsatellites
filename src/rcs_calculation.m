@@ -23,7 +23,7 @@ end
 
 p.Units = 'm';
 freq = 450e6;
-mesh(p,'MaxEdgeLength',0.5)
+mesh(p,'MaxEdgeLength',0.05)
 az = 0:1:360;
 el = 0;
 rcs(p, freq, az, el)
