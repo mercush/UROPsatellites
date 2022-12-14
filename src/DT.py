@@ -1,6 +1,6 @@
 # script to run trackability scoring for SSR DIT
 
-from py2neo import Graph
+# from py2neo import Graph
 from win32com.client import GetActiveObject
 import math
 import pandas as pd
@@ -26,11 +26,13 @@ facility_positions = [(-37.603, 140.388, 0.013851), (-45.639, 167.361, 0.344510)
 
 
 def main():
+    
+    # Connect to STK scenario
     uiApplication = GetActiveObject('STK12.Application')
     uiApplication.Visible = True
     root = uiApplication.Personality2
 
-    graph = Graph("bolt://localhost:7687", auth=("neo4j", "ssr"))
+    # graph = Graph("bolt://localhost:7687", auth=("neo4j", "ssr"))
     ASO_type = int(input("Enter 1 or 2 to score either: (1) an ASO already in orbit or (2) a new ASO - "))
 
     if ASO_type == 1:
@@ -53,8 +55,9 @@ def main():
 
     scenario = root.CurrentScenario
 
-    # build satellite
+    # Build satellite
     satellite = scenario.Children.New(18, "ASO")
+    # Set Keplerian elements
     keplerian = satellite.Propagator.InitialState.Representation.ConvertTo(1)
     keplerian.LocationType = 5
     keplerian.SizeShape.Eccentricity = aso_orb['Ecc']
@@ -68,14 +71,18 @@ def main():
     satellite.Propagator.InitialState.Representation.Assign(keplerian)
     satellite.Propagator.Propagate()
 
-    # detectability scoring
+    # Compute Metrics ---------------------------------------------------------
+
+    # 1. Radar Detectability scoring
+    # Function: radar_detectability()
     radar_detect_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
     prob_detection = radar_detectability(root)
     radar_detect_results = fill_d_dataframe(radar_detect_results, prob_detection)
     print(radar_detect_results)
     # optical_detectability(root)
 
-    # trackability scoring
+    # 2. Trackability scoring
+    # Functions: radar_trackability() & optical_tracability()
     radar_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
     optical_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
 
@@ -145,6 +152,7 @@ def radar_detectability(root):
     RCS = float(input("Enter the ASO's estimated radar cross-section in m^2: "))
     RCS = 10 * math.log10(RCS)
 
+    # Set RCS
     satellite = root.GetObjectFromPath('Satellite/ASO')
     satellite.RadarCrossSection.Inherit = 0
     satellite.RadarCrossSection.Model.FrequencyBands.Item(int(0)).ComputeStrategy.ConstantValue = RCS
@@ -286,7 +294,14 @@ def radar_trackability(aso_orb, root):
 # calculates metrics for optical trackability score
 def optical_trackability(aso_orb, root):
     scenario = root.CurrentScenario
-
+    
+    # TODO: Set lighting constraints on satellite
+    # # Apply Access Lighting constraint (penumbra or direct sun)
+    # satellite = root.GetObjectFromPath('Satellite/ASO')
+    # accessConstraintsSat = satellite.AccessConstraints
+    # satLightCstr = accessConstraintsSat.AddConstraint(25) # eCstrLighting
+    # satLightCstr.Condition = 2 # ePenumbraOrDirectSun
+    
     # place facilities in scenario
     count = 1
     for i in facility_positions:
@@ -299,11 +314,11 @@ def optical_trackability(aso_orb, root):
         sensor_name = "sensor_" + str(count)
         sensor = facility.Children.New(20, sensor_name)
         accessConstraintsSens = sensor.AccessConstraints
-        light = accessConstraintsSens.AddConstraint(25)
-        light.Condition = 3
+        light = accessConstraintsSens.AddConstraint(25) 
+        light.Condition = 3 # ePenumbraOrUmbra light constraint
 
         pattern1 = sensor.Pattern
-        pattern1.ConeAngle = 60
+        pattern1.ConeAngle = 60 # Cone angle constraint
         count += 1
 
     # create sensor constellation
