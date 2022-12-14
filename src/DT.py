@@ -24,7 +24,7 @@ facility_positions = [(-37.603, 140.388, 0.013851), (-45.639, 167.361, 0.344510)
                           (70.024, -162.191, 0.013845), (69.175, 18.258, 0.314617), (67.922, -103.469, -0.005155),
                           (74.757, -46.014, 2.651167), (72.423, 75.289, 0.011348), (71.372, 136.045, 0.010589)]
 
-
+#%%
 def main():
     
     # Connect to STK scenario
@@ -75,6 +75,7 @@ def main():
 
     # 1. Radar Detectability scoring
     # Function: radar_detectability()
+    print('\nRadar Detectability\n')
     radar_detect_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
     prob_detection = radar_detectability(root)
     radar_detect_results = fill_d_dataframe(radar_detect_results, prob_detection)
@@ -83,6 +84,7 @@ def main():
 
     # 2. Trackability scoring
     # Functions: radar_trackability() & optical_tracability()
+    print('\nRadar Trackability\n')
     radar_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
     optical_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
 
@@ -94,57 +96,12 @@ def main():
     print(radar_results)
     radar_score = radar_results['Score'].mean()
     print("\nOverall T Radar Score: {}\n".format(radar_score))
+    print('\nOptical Trackability\n')
     print(optical_results)
     optical_score = optical_results['Score'].mean()
     print("\nOverall T Optical Score: {}".format(optical_score))
 
-
-# calculates scores for detectability and builds dataframe to display results
-def fill_d_dataframe(dataframe, prob_detection):
-    if prob_detection < 0.5:
-        tier = 'Difficult to Detect'
-        score = 0
-    elif 0.5 <= prob_detection < 0.75:
-        tier = 'Detectable'
-        score = 0.5
-    elif 0.75 <= prob_detection:
-        tier = 'More Detectable'
-        score = 1.0
-
-    row = {'Metric': 'Max Probability of Detection', 'Value': prob_detection, 'Tier': tier, 'Score': score}
-    dataframe = dataframe.append(row, ignore_index=True)
-    return dataframe
-
-
-# calculates metrics for optical detectability score
-def optical_detectability(root):
-    scenario = root.CurrentScenario
-    root.UnitPreferences.SetCurrentUnit('PowerUnit', 'W')
-    root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
-
-    # compute the access for each EOIR sensor
-    satellite = root.GetObjectFromPath('Satellite/ASO')
-    EOIR = []
-    access = []
-    for i in range(1, 8):
-        EOIR.append(root.GetObjectFromPath('/Place/facility_{}/Sensor/EOIR'.format(i)))
-        access.append(satellite.GetAccessToObject(EOIR[i - 1]))
-        access[i - 1].ComputeAccess()
-
-    # get sensor with most access to ASO
-    access_data = []
-    durations = []
-    for i in range(1, 8):
-        access_data.append(access[i - 1].DataProviders.Item('Access Data').Exec(scenario.StartTime, scenario.StopTime))
-        durations.append(
-            sum(list(access_data[i - 1].Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues())))
-    max_value = max(durations)
-    max_index = durations.index(max_value)
-
-    EOIR_sensor = EOIR[max_index]
-    longest_access = access[max_index]
-    print(durations, EOIR_sensor, longest_access)
-
+#%% Radar Detectability
 
 # calculates metrics for radar detectability score
 def radar_detectability(root):
@@ -184,57 +141,13 @@ def radar_detectability(root):
             total_probability.append(j)
     # plt.scatter(total_probability)
     # plt.show()
+    
+    # Remove all accesses
+    root.ExecuteCommand('ClearAllAccess /')
+    
     return max(total_probability)
 
-
-# calculate scores for trackability and build dataframe to display results
-def fill_dataframe(dataframe, avg_pass, avg_coverage, avg_interval):
-    if avg_pass < 120:
-        pass_tier = 'Difficult to Track'
-        pass_score = 0
-    elif 120 <= avg_pass < 180:
-        pass_tier = "Trackable"
-        pass_score = 0.25
-    elif 180 <= avg_pass < 400:
-        pass_tier = 'More Trackable'
-        pass_score = 0.5
-    elif 400 <= avg_pass:
-        pass_tier = 'Very Trackable'
-        pass_score = 1.0
-
-    pass_row = {'Metric': ' Avg Pass (s)', 'Value': avg_pass, 'Tier': pass_tier, 'Score': pass_score}
-    dataframe = dataframe.append(pass_row, ignore_index=True)
-
-    if avg_coverage < 0.1:
-        cover_tier = 'Difficult to Track'
-        cover_score = 0
-    elif 0.1 <= avg_coverage < .25:
-        cover_tier = 'Trackable'
-        cover_score = 0.25
-    elif .25 <= avg_coverage < .60:
-        cover_tier = 'More Trackable'
-        cover_score = 0.5
-    elif .60 < avg_coverage:
-        cover_tier = 'Very Trackable'
-        cover_score = 1.0
-
-    cover_row = {'Metric': ' Avg Coverage', 'Value': avg_coverage, 'Tier': cover_tier, 'Score': cover_score}
-    dataframe = dataframe.append(cover_row, ignore_index=True)
-
-    if avg_interval > 43200:
-        int_tier = 'Difficult to Track'
-        int_score = 0
-    elif 43200 <= avg_interval < 14400:
-        int_tier = 'Trackable'
-        int_score = 0.25
-    elif 14400 >= avg_interval:
-        int_tier = 'More Trackable'
-        int_score = 0.5
-
-    int_row = {'Metric': ' Avg Interval (s)', 'Value': avg_interval, 'Tier': int_tier, 'Score': int_score}
-    dataframe = dataframe.append(int_row, ignore_index=True)
-    return dataframe
-
+#%% Radar and Optical Trackability
 
 # calculates metrics for radar trackability score
 def radar_trackability(aso_orb, root):
@@ -287,6 +200,9 @@ def radar_trackability(aso_orb, root):
         scenario.Children.Unload(8, 'facility_' + str(i))
     scenario.Children.Unload(6, 'SensorNetwork')
     scenario.Children.Unload(4, 'chain_1')
+    
+    # Remove all accesses
+    root.ExecuteCommand('ClearAllAccess /')
 
     return avg_pass, avg_coverage, avg_interval
 
@@ -352,9 +268,110 @@ def optical_trackability(aso_orb, root):
         scenario.Children.Unload(8, 'facility_' + str(i))
     scenario.Children.Unload(6, 'SensorNetwork')
     scenario.Children.Unload(4, 'chain_1')
+    
+    # Remove all accesses
+    root.ExecuteCommand('ClearAllAccess /')
 
     return avg_pass, avg_coverage, avg_interval
 
+#%% Optical Detectability
+
+# calculates metrics for optical detectability score
+def optical_detectability(root):
+    scenario = root.CurrentScenario
+    root.UnitPreferences.SetCurrentUnit('PowerUnit', 'W')
+    root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
+
+    # compute the access for each EOIR sensor
+    satellite = root.GetObjectFromPath('Satellite/ASO')
+    EOIR = []
+    access = []
+    for i in range(1, 8):
+        EOIR.append(root.GetObjectFromPath('/Place/facility_{}/Sensor/EOIR'.format(i)))
+        access.append(satellite.GetAccessToObject(EOIR[i - 1]))
+        access[i - 1].ComputeAccess()
+
+    # get sensor with most access to ASO
+    access_data = []
+    durations = []
+    for i in range(1, 8):
+        access_data.append(access[i - 1].DataProviders.Item('Access Data').Exec(scenario.StartTime, scenario.StopTime))
+        durations.append(
+            sum(list(access_data[i - 1].Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues())))
+    max_value = max(durations)
+    max_index = durations.index(max_value)
+
+    EOIR_sensor = EOIR[max_index]
+    longest_access = access[max_index]
+    print(durations, EOIR_sensor, longest_access)
+
+
+
+#%% Utility functions
+
+# calculates scores for detectability and builds dataframe to display results
+def fill_d_dataframe(dataframe, prob_detection):
+    if prob_detection < 0.5:
+        tier = 'Difficult to Detect'
+        score = 0
+    elif 0.5 <= prob_detection < 0.75:
+        tier = 'Detectable'
+        score = 0.5
+    elif 0.75 <= prob_detection:
+        tier = 'More Detectable'
+        score = 1.0
+
+    row = {'Metric': 'Max Probability of Detection', 'Value': prob_detection, 'Tier': tier, 'Score': score}
+    dataframe = dataframe.append(row, ignore_index=True)
+    return dataframe
+
+# calculate scores for trackability and build dataframe to display results
+def fill_dataframe(dataframe, avg_pass, avg_coverage, avg_interval):
+    if avg_pass < 120:
+        pass_tier = 'Difficult to Track'
+        pass_score = 0
+    elif 120 <= avg_pass < 180:
+        pass_tier = "Trackable"
+        pass_score = 0.25
+    elif 180 <= avg_pass < 400:
+        pass_tier = 'More Trackable'
+        pass_score = 0.5
+    elif 400 <= avg_pass:
+        pass_tier = 'Very Trackable'
+        pass_score = 1.0
+
+    pass_row = {'Metric': ' Avg Pass (s)', 'Value': avg_pass, 'Tier': pass_tier, 'Score': pass_score}
+    dataframe = dataframe.append(pass_row, ignore_index=True)
+
+    if avg_coverage < 0.1:
+        cover_tier = 'Difficult to Track'
+        cover_score = 0
+    elif 0.1 <= avg_coverage < .25:
+        cover_tier = 'Trackable'
+        cover_score = 0.25
+    elif .25 <= avg_coverage < .60:
+        cover_tier = 'More Trackable'
+        cover_score = 0.5
+    elif .60 < avg_coverage:
+        cover_tier = 'Very Trackable'
+        cover_score = 1.0
+
+    cover_row = {'Metric': ' Avg Coverage', 'Value': avg_coverage, 'Tier': cover_tier, 'Score': cover_score}
+    dataframe = dataframe.append(cover_row, ignore_index=True)
+
+    if avg_interval > 43200:
+        int_tier = 'Difficult to Track'
+        int_score = 0
+    elif 43200 <= avg_interval < 14400:
+        int_tier = 'Trackable'
+        int_score = 0.25
+    elif 14400 >= avg_interval:
+        int_tier = 'More Trackable'
+        int_score = 0.5
+
+    int_row = {'Metric': ' Avg Interval (s)', 'Value': avg_interval, 'Tier': int_tier, 'Score': int_score}
+    dataframe = dataframe.append(int_row, ignore_index=True)
+    return dataframe
 
 # writes Cypher query to get orbital elements for ASO already in ASTRIAGraph and executes query
 def query_orbit(norad_id, graph):
