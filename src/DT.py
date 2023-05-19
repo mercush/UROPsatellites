@@ -4,7 +4,10 @@
 from win32com.client import GetActiveObject
 import math
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
+import tempfile
+import pdb
 
 facility_positions = [(-37.603, 140.388, 0.013851), (-45.639, 167.361, 0.344510), (-44.040, -176.375, 0.104582),
                           (-43.940, -72.450, 0.075715), (-51.655, -58.681, 0.127896), (-34.070, 19.703, 0.416372),
@@ -31,7 +34,10 @@ def main():
     uiApplication = GetActiveObject('STK12.Application')
     uiApplication.Visible = True
     root = uiApplication.Personality2
+    scenario = root.CurrentScenario
 
+    # Inputs
+    print("\n------\nInputs\n------")
     # graph = Graph("bolt://localhost:7687", auth=("neo4j", "ssr"))
     ASO_type = int(input("Enter 1 or 2 to score either: (1) an ASO already in orbit or (2) a new ASO - "))
 
@@ -41,6 +47,7 @@ def main():
         aso_orb = query_orbit(norad_id, graph)
 
     elif ASO_type == 2:
+        print("\nOrbital Elements")
         aso_orb = {}
         SMA = float(input("Enter the planned semimajor axis in kilometers: "))
         aso_orb['SMA'] = SMA * 1000
@@ -53,7 +60,14 @@ def main():
         argp = float(input("Enter the planned argument of perigee in degrees: "))
         aso_orb['ArgP'] = math.radians(argp)
 
-    scenario = root.CurrentScenario
+    # Additional inputs
+    print("\n\nPhysical Properties")
+    Height = float(input("Enter satellite Height in m: "))
+    Width = float(input("Enter satellite Width in m: "))
+    Depth = float(input("Enter satellite Depth in m: "))
+    reflectance = float(input("Enter satellite reflectance (%): "))
+    RCS = float(input("Enter the ASO's estimated radar cross-section in m^2: "))
+    RCS = 10 * math.log10(RCS) # dBsm
 
     # Build satellite
     satellite = scenario.Children.New(18, "ASO")
@@ -72,42 +86,56 @@ def main():
     satellite.Propagator.Propagate()
 
     # Compute Metrics ---------------------------------------------------------
+    
 
     # 1. Radar Detectability scoring
     # Function: radar_detectability()
-    print('\nRadar Detectability\n')
+    print('\nRadar Detectability Analysis\n----------------------------\n')
     radar_detect_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
-    prob_detection = radar_detectability(root)
+    prob_detection = radar_detectability(root,RCS)
     radar_detect_results = fill_d_dataframe(radar_detect_results, prob_detection)
+    radar_det_score = radar_detect_results['Score'].iloc[0]
     print(radar_detect_results)
     # optical_detectability(root)
 
-    # 2. Trackability scoring
+    # 2. Radar Trackability scoring
     # Functions: radar_trackability() & optical_tracability()
-    print('\nRadar Trackability\n')
+    print('\nRadar Trackability Analysis\n---------------------------\n')
     radar_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
-    optical_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
-
     avg_pass, avg_coverage, avg_interval = radar_trackability(aso_orb, root)
-    opt_pass, opt_coverage, opt_int = optical_trackability(aso_orb, root)
     radar_results = fill_dataframe(radar_results, avg_pass, avg_coverage, avg_interval)
-    optical_results = fill_dataframe(optical_results, opt_pass, opt_coverage, opt_int)
-
     print(radar_results)
     radar_score = radar_results['Score'].mean()
     print("\nOverall T Radar Score: {}\n".format(radar_score))
-    print('\nOptical Trackability\n')
+    
+    # 3. Optical Trackability scoring
+    print('\nOptical Trackability Analysis\n-----------------------------\n')
+    optical_results = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
+    opt_pass, opt_coverage, opt_int = optical_trackability(aso_orb, root)
+    optical_results = fill_dataframe(optical_results, opt_pass, opt_coverage, opt_int)
     print(optical_results)
     optical_score = optical_results['Score'].mean()
     print("\nOverall T Optical Score: {}".format(optical_score))
+    
+    # 4. Optical Detectability
+    print('\nOptical Detectability Analysis\n------------------------------\n')
+    Vavg, tier, opt_det_score, opt_det_results = optical_detectability(root, Height, Width, Depth, reflectance)
+    print(opt_det_results)
+    print("\nOverall Optical Detectability Score: {}".format(opt_det_score))
+    # print("Avg Magnitude {} mag".format(opt_detect_results))
+    
+    
+    # Overall Results
+    print('\n\nOverall Scores \n--------------\n')
+    print('Trackability Score: {} (larger of Radar and Optical Trackability Scores)'.format(max(radar_score,optical_score)))
+    print('Detectability Score: {} (average of Radar and Optical Detectability Scores)'.format(np.mean([radar_det_score,opt_det_score])))
 
 #%% Radar Detectability
 
 # calculates metrics for radar detectability score
-def radar_detectability(root):
+def radar_detectability(root,RCS):
     scenario = root.CurrentScenario
-    RCS = float(input("Enter the ASO's estimated radar cross-section in m^2: "))
-    RCS = 10 * math.log10(RCS)
+    
 
     # Set RCS
     satellite = root.GetObjectFromPath('Satellite/ASO')
@@ -212,11 +240,11 @@ def optical_trackability(aso_orb, root):
     scenario = root.CurrentScenario
     
     # TODO: Set lighting constraints on satellite
-    # # Apply Access Lighting constraint (penumbra or direct sun)
-    # satellite = root.GetObjectFromPath('Satellite/ASO')
-    # accessConstraintsSat = satellite.AccessConstraints
-    # satLightCstr = accessConstraintsSat.AddConstraint(25) # eCstrLighting
-    # satLightCstr.Condition = 2 # ePenumbraOrDirectSun
+    # Apply Access Lighting constraint (penumbra or direct sun)
+    satellite = root.GetObjectFromPath('Satellite/ASO')
+    accessConstraintsSat = satellite.AccessConstraints
+    satLightCstr = accessConstraintsSat.AddConstraint(25) # eCstrLighting
+    satLightCstr.Condition = 2 # ePenumbraOrDirectSun
     
     # place facilities in scenario
     count = 1
@@ -276,8 +304,158 @@ def optical_trackability(aso_orb, root):
 
 #%% Optical Detectability
 
+def optical_detectability(root,Height,Width,Depth,reflectance):
+    
+    # Get handles to scenario and satellite
+    scenario = root.CurrentScenario
+    satellite = root.GetObjectFromPath('Satellite/ASO')
+    
+    # Apply Access Lighting constraint (penumbra or direct sun)
+    try:
+        accessConstraintsSat = satellite.AccessConstraints
+        satLightCstr = accessConstraintsSat.AddConstraint(25) # eCstrLighting
+        satLightCstr.Condition = 2 # ePenumbraOrDirectSun
+    except:
+        # Contraint already added
+        pass
+    
+    # Set the EOIR reflectance and Shape as box <Height><Width><Depth> 
+    root.ExecuteCommand('EOIR */Satellite/ASO Shape Type Box {h} {w} {d} Material GrayBody Reflectance {r}'.format(h=Height,w=Width,d=Depth, r=reflectance))
+
+    # Create dictionary to store data
+    opt_dict = {'Facility_1':{},'Facility_2':{},'Facility_3':{},'Facility_4':{},
+                'Facility_5':{},'Facility_6':{}, 'Facility_7':{}}
+    
+    
+    # Loop through 7 SSRD stations
+    for i in range(7):
+        
+        # Get EOIR sensor
+        sensor_num = i+1 # Sensor number (1-7)
+        name = 'Facility_'+str(sensor_num)
+        eoir = root.GetObjectFromPath('/Place/facility_{}/Sensor/EOIR'.format(sensor_num))
+        
+        # Set pointing to target ASO
+        eoir.SetPointingType(5) # eSnPtTargeted
+        try:
+            eoir.Pointing.Targets.Add('*/Satellite/ASO')
+        except:
+            pass
+    
+        # Apply Access Lighting constraint (penumbra or umbra)
+        accessConstraintsSen = eoir.AccessConstraints
+        senLightCstr = accessConstraintsSen.GetActiveConstraint(25) # AgEAccessConstraints.eCstrLighting
+        senLightCstr.Condition = 3 # ePenumbraOrUmbra
+        
+        # Compute access
+        access = satellite.GetAccessToObject(eoir)
+        access.ComputeAccess()
+        access_data = access.DataProviders.Item('Access Data').Exec(scenario.StartTime, scenario.StopTime)
+        
+        # Get total duration
+        num_access = access_data.Intervals.Count
+        if num_access > 0:
+            dur = access_data.Intervals.Item(0).DataSets.GetDataSetByName('Duration').GetValues() # List of durations
+            tot_dur = sum(dur)
+            max_dur = max(dur)
+        else:
+            tot_dur = 0
+        
+        # Store data in dict
+        opt_dict[name]['num_access'] = num_access
+        opt_dict[name]['tot_dur'] = float(tot_dur)
+        opt_dict[name]['max_dur'] = float(max_dur)
+        opt_dict[name]['eoir'] = eoir # Handle to eoir sensor object
+        opt_dict[name]['access_data'] = access_data # Handle to access data
+    
+    # Load to dataframe
+    df = pd.DataFrame(opt_dict).T
+    
+    # EOIR visibility
+    # Find facility with best access (longest total duration)
+    ind = np.argmax(df.tot_dur)
+    best_station = df.index[ind]
+    
+    # Remove all accesses
+    root.ExecuteCommand('ClearAllAccess /')
+    
+    # Compute access for best facility
+    eoir = root.GetObjectFromPath('/Place/facility_{}/Sensor/EOIR'.format(str(ind+1)))
+    eoir.SetPointingType(5) # eSnPtTargeted
+    # Apply Access Lighting constraint (penumbra or umbra)
+    accessConstraintsSen = eoir.AccessConstraints
+    senLightCstr = accessConstraintsSen.GetActiveConstraint(25) # AgEAccessConstraints.eCstrLighting
+    senLightCstr.Condition = 3 # ePenumbraOrUmbra
+    
+    # Compute access
+    access = satellite.GetAccessToObject(eoir)
+    access.ComputeAccess()
+
+    # EOIR configuration
+    # Add satellite to EOIR Configuration
+    root.ExecuteCommand('EOIR */ TargetConfig AddTarget Satellite/ASO')
+
+
+    # Create report: EOIR Sensor-to-Target Metrics
+    tmp = tempfile.NamedTemporaryFile(delete=False,suffix='.csv') # Temporary file
+    outfile = tmp.name # Name of file (.csv)
+    
+    # See: https://help.agi.com/stkdevkit/index.htm#../Subsystems/connectCmds/Content/infoReportAdditionalData.htm?Highlight=%22Sensor-to-Target%22
+    root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Export File "{}" AdditionalData "Satellite/ASO Band1" TimeStep 120.0 '.format(outfile)) # Full search
+    # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod "Access/Place-facility_1-Sensor-EOIR-To-Satellite-ASO AccessIntervals.First Interval" TimeStep 60.0') # First access interval
+    # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod "Access/Place-facility_1-Sensor-EOIR-To-Satellite-ASO AccessIntervals.Longest Interval" TimeStep 10.0') # First access interval
+    # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod Intervals "Access/Place-facility_1-Sensor-EOIR-To-Satellite-ASO AccessIntervals" TimeStep 30.0 ') # All access intervals
+    # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod Intervals "C:/Users/scott/Documents/Repos/python_rough_code/STK/intervals.int" TimeStep 30.0 ') # All access intervals
+
+    # Extract data from report
+    dfrep = pd.read_csv(outfile,header=2)
+    # Rename columns
+    dfrep = dfrep.rename(columns={'Time (UTCG)':'Time'})
+    dfrep['Time'] = pd.to_datetime(dfrep.Time) # Convert time to datetime
+    # Delete temp file
+    tmp.close()
+    
+    # Compute Vmag
+    Vref = 0.03 # Vega reference
+    Eref = 1.140129e-12 # Irradiance of Vega
+    Vmag = Vref - 2.5*np.log10(dfrep['Effective target irradiance (W/cm^2)']/Eref)
+    # Insert into dataframe
+    dfrep.insert(2,'Vmag',Vmag)
+    
+    # Compute average of values < 15
+    Vavg = dfrep['Vmag'][dfrep.Vmag < 15].mean()
+    
+    # Determine Optical Detectability score
+    # if average vmag < 15, the rating is Detectable, and score is 1
+    # if average vmag > 15, the rating is Not detectable, and the score is 0.5
+    if Vavg <= 15:
+        tier = 'Detectable'
+        score = 1.
+    elif Vavg > 15:
+        tier = 'Not detectable'
+        score = 0.5
+    
+    # Format results into dataframe
+    row = {'Metric': ' Avg Visual Magnitude (mag)', 'Value': Vavg, 'Tier': tier, 'Score': score}
+    df = pd.DataFrame(columns=['Metric', 'Value', 'Tier', 'Score'])
+    df = df.append(row, ignore_index=True)
+    
+    # Plot
+    fig, ax = plt.subplots()
+    ax.plot(dfrep.Time,dfrep.Vmag,'ob',label='Measurements')
+    ax.plot([dfrep.Time.min(),dfrep.Time.max()],[15,15],':r',label='Cutoff') # Reference line
+    ax.plot([dfrep.Time.min(),dfrep.Time.max()],[Vavg,Vavg],':b',label='Average = {}'.format(str(np.round(Vavg,3)))) # Reference line
+    ax.invert_yaxis()
+    ax.set_ylabel('Vmag (mag)')
+    ax.set_xlabel('Epoch')
+    ax.legend(loc="lower left")
+
+    return Vavg, tier, score, df
+
+
+
 # calculates metrics for optical detectability score
-def optical_detectability(root):
+def optical_detectability_old(root):
     scenario = root.CurrentScenario
     root.UnitPreferences.SetCurrentUnit('PowerUnit', 'W')
     root.UnitPreferences.SetCurrentUnit('SmallDistanceUnit', 'cm')
