@@ -87,7 +87,6 @@ def main():
 
     # Compute Metrics ---------------------------------------------------------
     
-
     # 1. Radar Detectability scoring
     # Function: radar_detectability()
     print('\nRadar Detectability Analysis\n----------------------------\n')
@@ -147,7 +146,10 @@ def radar_detectability(root,RCS):
     access = []
     for i in range(1, 8):
         radar.append(root.GetObjectFromPath('/Place/facility_{}/Radar/Radar'.format(i)))
-        radar[i - 1].Model.AntennaControl.EmbeddedModel.BeamDirectionProvider.Directions.AddObject(satellite)
+        try:
+            radar[i - 1].Model.AntennaControl.EmbeddedModel.BeamDirectionProvider.Directions.AddObject(satellite)
+        except:
+            pass
         access.append(satellite.GetAccessToObject(radar[i - 1]))
         access[i - 1].ComputeAccess()
 
@@ -222,6 +224,27 @@ def radar_trackability(aso_orb, root):
     avg_pass = total_access / number_of_intervals
     avg_coverage = total_access / 2592000
     avg_interval = (2592000 - total_access) / number_of_intervals
+    
+    # Save access data
+    try:
+        # Get start, stop, duration as list
+        durations = list(chainDP.DataSets.GetDataSetByName('Duration').GetValues())
+        start_list = list(chainDP.DataSets.GetDataSetByName('Start Time').GetValues())
+        stop_list = list(chainDP.DataSets.GetDataSetByName('Stop Time').GetValues())  
+        from_list = list(chainDP.DataSets.GetDataSetByName('From Object').GetValues())
+        to_list = list(chainDP.DataSets.GetDataSetByName('To Object').GetValues())
+        # Create dataframe to save
+        df = pd.DataFrame(columns=['From','To','Start','Stop','Duration'])
+        df['From'] = from_list
+        df['To'] = to_list
+        df['Start'] = start_list
+        df['Stop'] = stop_list
+        df['Duration'] = durations
+        # Save dataframe
+        df.to_csv('Access_Times_Radar.csv')
+        
+    except:
+        print('Error saving LOS access data')
 
     # unload objects
     for i in range(1, 50):
@@ -290,6 +313,28 @@ def optical_trackability(aso_orb, root):
     avg_pass = total_access / number_of_intervals
     avg_coverage = total_access / 2592000
     avg_interval = (2592000 - total_access) / number_of_intervals
+    
+    # Save access data
+    try:
+        # Get start, stop, duration as list
+        durations = list(chainDP.DataSets.GetDataSetByName('Duration').GetValues())
+        start_list = list(chainDP.DataSets.GetDataSetByName('Start Time').GetValues())
+        stop_list = list(chainDP.DataSets.GetDataSetByName('Stop Time').GetValues())  
+        from_list = list(chainDP.DataSets.GetDataSetByName('From Object').GetValues())
+        to_list = list(chainDP.DataSets.GetDataSetByName('To Object').GetValues())
+        # Create dataframe to save
+        df = pd.DataFrame(columns=['From','To','Start','Stop','Duration'])
+        df['From'] = from_list
+        df['To'] = to_list
+        df['Start'] = start_list
+        df['Stop'] = stop_list
+        df['Duration'] = durations
+        # Save dataframe
+        df.to_csv('Access_Times_Optical.csv')
+        
+    except:
+        print('Error saving LOS access data')
+    
 
     # unload objects
     for i in range(1, 50):
