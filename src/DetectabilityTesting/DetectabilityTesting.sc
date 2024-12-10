@@ -2368,12 +2368,12 @@ BEGIN Scenario
         Instance Place/facility_5
             *		
             Place/facility_5		
-            Place/facility_5/Radar/RadarX		
+            Place/facility_5/Radar/Radar		
             Place/facility_5/Sensor/EOIR		
             Place/facility_5/Sensor/RadarFOV		
         END Instance
-        Instance Place/facility_5/Radar/RadarX
-            Place/facility_5/Radar/RadarX		
+        Instance Place/facility_5/Radar/Radar
+            Place/facility_5/Radar/Radar		
         END Instance
         Instance Place/facility_5/Sensor/EOIR
             *		
