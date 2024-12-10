@@ -70,7 +70,13 @@ def main():
     RCS = 10 * math.log10(RCS) # dBsm
 
     # Build satellite
-    satellite = scenario.Children.New(18, "ASO")
+    try:
+        # Check if satellite exists in scenario
+        satellite = root.GetObjectFromPath('Satellite/ASO')
+        print("Existing satellite found. Editing properties...")
+    except:
+        print("Satellite does not exist. Creating a new satellite...")
+        satellite = scenario.Children.New(18, "ASO")
     # Set Keplerian elements
     keplerian = satellite.Propagator.InitialState.Representation.ConvertTo(1)
     keplerian.LocationType = 5
@@ -140,40 +146,107 @@ def radar_detectability(root,RCS):
     satellite = root.GetObjectFromPath('Satellite/ASO')
     satellite.RadarCrossSection.Inherit = 0
     satellite.RadarCrossSection.Model.FrequencyBands.Item(int(0)).ComputeStrategy.ConstantValue = RCS
-
-    # get access to satellite from radar sensors
-    radar = []
-    access = []
-    for i in range(1, 8):
-        radar.append(root.GetObjectFromPath('/Place/facility_{}/Radar/Radar'.format(i)))
+    
+    # New method --------------------------------------------------------------
+    
+    # Remove all accesses
+    root.ExecuteCommand('ClearAllAccess /')
+    
+    
+    total_durration_list = []
+    access_list = []
+    for i in range(1, 8): # Loop through Ground stations
+        # Sensor. Set pointing to target ASO
+        mysensor = root.GetObjectFromPath('/Place/facility_{}/Sensor/RadarFOV'.format(i)) # Sensor
+        mysensor.SetPointingType(5) # eSnPtTargeted
         try:
-            radar[i - 1].Model.AntennaControl.EmbeddedModel.BeamDirectionProvider.Directions.AddObject(satellite)
+            mysensor.Pointing.Targets.Add('*/Satellite/ASO')
         except:
             pass
-        access.append(satellite.GetAccessToObject(radar[i - 1]))
-        access[i - 1].ComputeAccess()
 
-    # get sensor with longest access
-    access_data = []
-    durations = []
-    for i in range(1, 8):
-        access_data.append(access[i-1].DataProviders.Item('Access Data').Exec(scenario.StartTime, scenario.StopTime))
-        durations.append(sum(list(access_data[i-1].Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues())))
-    max_value = max(durations)
-    max_index = durations.index(max_value)
-
-    longest_access = access[max_index]
+        # Radar. Target satellite
+        myradar = root.GetObjectFromPath('/Place/facility_{}/Sensor/RadarFOV/Radar/Radar'.format(i)) # Radar
+        try:
+            myradar.Model.AntennaControl.EmbeddedModel.BeamDirectionProvider.Directions.AddObject(satellite)
+        except:
+            pass
+        
+        # Compute access
+        access = satellite.GetAccessToObject(myradar)
+        access.ComputeAccess()
+        
+        # Get durations
+        access_data = access.DataProviders.Item('Access Data').Exec(scenario.StartTime, scenario.StopTime)
+        try:
+            durations = access_data.Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues()
+            total_duration = sum(durations)
+        except:
+            total_duration = 0.
+        
+        # Append to lists
+        total_durration_list.append(total_duration)
+        access_list.append(access)
+    
+    # Get sensor with max duration
+    max_value = max(total_durration_list)
+    max_index = total_durration_list.index(max_value)
+    
+    # Get probability from longest access
+    longest_access = access_list[max_index]
     Probability = longest_access.DataProviders.Item('Radar SearchTrack').Exec(scenario.StartTime, scenario.StopTime, 60)
     total_probability = []
     for i in range(0, (Probability.Intervals.Count - 1)):
         partial_probability = list(Probability.Intervals.Item(int(i)).DataSets.GetDataSetByName('S/T PDet1').GetValues())
         for j in partial_probability:
             total_probability.append(j)
-    # plt.scatter(total_probability)
-    # plt.show()
+    
+    # -------------------------------------------------------------------------
+    
+    # Old version
+    
+    # # get access to satellite from radar sensors
+    # radar = []
+    # access = []
+    # for i in range(1, 8):
+        
+    #     # Old method
+    #     radar.append(root.GetObjectFromPath('/Place/facility_{}/Radar/Radar'.format(i)))
+    #     try:
+    #         radar[i - 1].Model.AntennaControl.EmbeddedModel.BeamDirectionProvider.Directions.AddObject(satellite)
+    #     except:
+    #         print('Error targeting satellite')
+    #         pass
+    #     access.append(satellite.GetAccessToObject(radar[i - 1]))
+    #     access[i - 1].ComputeAccess()
+        
+
+    # # get sensor with longest access
+    # access_data = []
+    # durations = []
+    # for i in range(1, 8):
+    #     access_data.append(access[i-1].DataProviders.Item('Access Data').Exec(scenario.StartTime, scenario.StopTime))
+    #     try: #FIXME: Debugging
+    #         durations.append(sum(list(access_data[i-1].Intervals.Item(0).Datasets.GetDataSetByName('Duration').GetValues())))
+    #     except:
+    #         pdb.set_trace()
+    # max_value = max(durations)
+    # max_index = durations.index(max_value)
+
+    # longest_access = access[max_index]
+    # Probability = longest_access.DataProviders.Item('Radar SearchTrack').Exec(scenario.StartTime, scenario.StopTime, 60)
+    # total_probability = []
+    # for i in range(0, (Probability.Intervals.Count - 1)):
+    #     partial_probability = list(Probability.Intervals.Item(int(i)).DataSets.GetDataSetByName('S/T PDet1').GetValues())
+    #     for j in partial_probability:
+    #         total_probability.append(j)
+    # -------------------------------------------------
     
     # Remove all accesses
     root.ExecuteCommand('ClearAllAccess /')
+    
+    if len(total_probability) == 0:
+        # No radar accesses. Return probability as zero.
+        return 0
     
     return max(total_probability)
 
@@ -231,17 +304,17 @@ def radar_trackability(aso_orb, root):
         durations = list(chainDP.DataSets.GetDataSetByName('Duration').GetValues())
         start_list = list(chainDP.DataSets.GetDataSetByName('Start Time').GetValues())
         stop_list = list(chainDP.DataSets.GetDataSetByName('Stop Time').GetValues())  
-        from_list = list(chainDP.DataSets.GetDataSetByName('From Object').GetValues())
-        to_list = list(chainDP.DataSets.GetDataSetByName('To Object').GetValues())
+        # from_list = list(chainDP.DataSets.GetDataSetByName('From Object').GetValues())
+        # to_list = list(chainDP.DataSets.GetDataSetByName('To Object').GetValues())
         # Create dataframe to save
-        df = pd.DataFrame(columns=['From','To','Start','Stop','Duration'])
-        df['From'] = from_list
-        df['To'] = to_list
+        df = pd.DataFrame(columns=['Start','Stop','Duration'])
+        # df['From'] = from_list
+        # df['To'] = to_list
         df['Start'] = start_list
         df['Stop'] = stop_list
         df['Duration'] = durations
         # Save dataframe
-        df.to_csv('Access_Times_Radar.csv')
+        df.to_csv('Access_Times_Radar.csv',index=False)
         
     except:
         print('Error saving LOS access data')
@@ -320,17 +393,17 @@ def optical_trackability(aso_orb, root):
         durations = list(chainDP.DataSets.GetDataSetByName('Duration').GetValues())
         start_list = list(chainDP.DataSets.GetDataSetByName('Start Time').GetValues())
         stop_list = list(chainDP.DataSets.GetDataSetByName('Stop Time').GetValues())  
-        from_list = list(chainDP.DataSets.GetDataSetByName('From Object').GetValues())
-        to_list = list(chainDP.DataSets.GetDataSetByName('To Object').GetValues())
+        # from_list = list(chainDP.DataSets.GetDataSetByName('From Object').GetValues())
+        # to_list = list(chainDP.DataSets.GetDataSetByName('To Object').GetValues())
         # Create dataframe to save
-        df = pd.DataFrame(columns=['From','To','Start','Stop','Duration'])
-        df['From'] = from_list
-        df['To'] = to_list
+        df = pd.DataFrame(columns=['Start','Stop','Duration'])
+        # df['From'] = from_list
+        # df['To'] = to_list
         df['Start'] = start_list
         df['Stop'] = stop_list
         df['Duration'] = durations
         # Save dataframe
-        df.to_csv('Access_Times_Optical.csv')
+        df.to_csv('Access_Times_Optical.csv',index=False)
         
     except:
         print('Error saving LOS access data')
@@ -405,6 +478,7 @@ def optical_detectability(root,Height,Width,Depth,reflectance):
             max_dur = max(dur)
         else:
             tot_dur = 0
+            max_dur = 0
         
         # Store data in dict
         opt_dict[name]['num_access'] = num_access
@@ -446,24 +520,36 @@ def optical_detectability(root,Height,Width,Depth,reflectance):
     outfile = tmp.name # Name of file (.csv)
     
     # See: https://help.agi.com/stkdevkit/index.htm#../Subsystems/connectCmds/Content/infoReportAdditionalData.htm?Highlight=%22Sensor-to-Target%22
-    root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Export File "{}" AdditionalData "Satellite/ASO Band1" TimeStep 120.0 '.format(outfile)) # Full search
-    # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod "Access/Place-facility_1-Sensor-EOIR-To-Satellite-ASO AccessIntervals.First Interval" TimeStep 60.0') # First access interval
+    # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Export File "{}" AdditionalData "Satellite/ASO Band1" TimeStep 120.0 '.format(outfile)) # Full search
+    # # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod "Access/Place-facility_1-Sensor-EOIR-To-Satellite-ASO AccessIntervals.First Interval" TimeStep 60.0') # First access interval
     # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod "Access/Place-facility_1-Sensor-EOIR-To-Satellite-ASO AccessIntervals.Longest Interval" TimeStep 10.0') # First access interval
     # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod Intervals "Access/Place-facility_1-Sensor-EOIR-To-Satellite-ASO AccessIntervals" TimeStep 30.0 ') # All access intervals
     # root.ExecuteCommand('ReportCreate */Place/facility_1/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Display AdditionalData "Satellite/ASO Band1" TimePeriod Intervals "C:/Users/scott/Documents/Repos/python_rough_code/STK/intervals.int" TimeStep 30.0 ') # All access intervals
 
+    root.ExecuteCommand('ReportCreate */Place/facility_{}/Sensor/EOIR Style "EOIR Sensor-to-Target Metrics" Type Export File "{}" AdditionalData "Satellite/ASO Band1" TimeStep 120.0 '.format(str(ind+1),outfile)) # Full search
+
     # Extract data from report
-    dfrep = pd.read_csv(outfile,header=2)
+    dfrep = pd.read_csv(outfile,header=2) # FIXME: check header
     # Rename columns
     dfrep = dfrep.rename(columns={'Time (UTCG)':'Time'})
     dfrep['Time'] = pd.to_datetime(dfrep.Time) # Convert time to datetime
     # Delete temp file
     tmp.close()
+
     
     # Compute Vmag
+    # NOTE: The EOIR modul was overhalle in STK v12.9.x.
+    # Report variable names seem to have changed.
+    # Effective target irradiance (W/cm^2) is no longer present
+    # Instead, there is In-band target irradiance (W/cm^2)
+    
     Vref = 0.03 # Vega reference
     Eref = 1.140129e-12 # Irradiance of Vega
-    Vmag = Vref - 2.5*np.log10(dfrep['Effective target irradiance (W/cm^2)']/Eref)
+    try:
+        Vmag = Vref - 2.5*np.log10(dfrep['Effective target irradiance (W/cm^2)']/Eref)
+    except:
+        # New variable name as of STK v12.9.x
+        Vmag = Vref - 2.5*np.log10(dfrep['In-band target irradiance (W/cm^2)']/Eref)
     # Insert into dataframe
     dfrep.insert(2,'Vmag',Vmag)
     
@@ -585,7 +671,7 @@ def fill_dataframe(dataframe, avg_pass, avg_coverage, avg_interval):
     if avg_interval > 43200:
         int_tier = 'Difficult to Track'
         int_score = 0
-    elif 43200 <= avg_interval < 14400:
+    elif 14400 <= avg_interval < 43200: # BUG: swapped these two. Working now.
         int_tier = 'Trackable'
         int_score = 0.25
     elif 14400 >= avg_interval:
@@ -594,6 +680,7 @@ def fill_dataframe(dataframe, avg_pass, avg_coverage, avg_interval):
 
     int_row = {'Metric': ' Avg Interval (s)', 'Value': avg_interval, 'Tier': int_tier, 'Score': int_score}
     dataframe = dataframe.append(int_row, ignore_index=True)
+    
     return dataframe
 
 # writes Cypher query to get orbital elements for ASO already in ASTRIAGraph and executes query
